@@ -44,7 +44,6 @@ class create_product(CreateView):
     success_url = reverse_lazy('home')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = self.form_class()
         context["form_name"] = "Add Product"
         context["btn_name"] = "Add_product"
         return context
