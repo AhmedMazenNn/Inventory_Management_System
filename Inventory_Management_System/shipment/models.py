@@ -16,12 +16,16 @@ class Shipment(models.Model):
 
     def __str__(self):
         return f"Shipment {self.id} from {self.factory_name}"
+    class Meta():
+        db_table = "shipment"
 
 class ShipmentItem(models.Model):
-    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL, related_name='shipment_items')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL)
+    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL,null=True, related_name='shipment_items')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
         return f"{self.quantity} of {self.product.name}"
+    class Meta():
+        db_table = "shipment_item"
 
