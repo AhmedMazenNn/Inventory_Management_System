@@ -17,8 +17,8 @@ class Order(models.Model):
         return f"Order {self.id} for {self.supermarket_name}"
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, related_name='order_items')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL,null=True, related_name='order_items')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
