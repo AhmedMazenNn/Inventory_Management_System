@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect
 from django.views import View
 from .forms import EmployeeRegistrationForm
+from django.contrib import messages
+
 
 User = get_user_model()
 
@@ -34,5 +36,6 @@ class RegisterEmployeeView(LoginRequiredMixin, UserPassesTestMixin, View):
             user.role = "employee"
             user.set_password(form.cleaned_data["password"])
             user.save()
+            messages.success(request, f"Employee '{user.username}' registered successfully.")
             return redirect("dashboard")
         return render(request, self.template_name, {"form": form})
