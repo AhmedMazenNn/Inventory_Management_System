@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 
 {% load static %}
 
@@ -10,31 +10,32 @@
     <h2>Update Shipment</h2>
 
 
-    <!--shipment update form-->    
+    <!--shipment update form-->
     <form method="POST">
         {% csrf_token %}
 
-    <!--factory name input-->
+        <!--factory name input-->
         <div class="mb-3">
             <label for="factory_name" class="form-label">factory_name</label>
-            <input type="text" class="form-control" id="factory_name" name="factory_name" value="{{ shipment.factory_name }}" required>
+            <input type="text" class="form-control" id="factory_name" name="factory_name"
+                value="{{ shipment.factory_name }}" required>
         </div>
 
 
-        <!--status dropdown-->        
+        <!--status dropdown-->
         <div class="mb-3">
             <label for="status" class="form-label">status</label>
             <select class="form-select" id="status" name="status">
-                <option value="Pending" {% if shipment.status == 'Pending' %}selected{% endif %}>Pending</option>
-                <option value="Approved" {% if shipment.status == 'Approved' %}selected{% endif %}>Approved</option>
-                <option value="Delivered" {% if shipment.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                <option value="Pending" {% if shipment.status=='Pending' %}selected{% endif %}>Pending</option>
+                <option value="Approved" {% if shipment.status=='Approved' %}selected{% endif %}>Approved</option>
+                <option value="Delivered" {% if shipment.status=='Delivered' %}selected{% endif %}>Delivered</option>
             </select>
         </div>
 
 
 
 
-        <!--created by input-->       
+        <!--created by input-->
         <div class="mb-3">
             <label for="created_by" class="form-label">created_by</label>
             <input type="text" class="form-control" id="created_by" name="created_by" value="{{ shipment.created_by }}">
@@ -44,7 +45,8 @@
         <!--approved by input-->
         <div class="mb-3">
             <label for="approved_by" class="form-label">approved_by</label>
-            <input type="text" class="form-control" id="approved_by" name="approved_by" value="{{ shipment.approved_by }}">
+            <input type="text" class="form-control" id="approved_by" name="approved_by"
+                value="{{ shipment.approved_by }}">
         </div>
         <!--submit button-->
         <button type="submit" class="btn btn-primary">Update</button>

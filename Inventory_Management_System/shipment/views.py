@@ -4,6 +4,14 @@ from .forms import ShipmentForm,ShipmentItemFormSet
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
+
+# @login_required
+def list_shipment(request):
+    shipments = Shipment.objects.all()
+    return render(request, 'shipment/list_of_shipment.html', {
+        'shipments': shipments
+    })
+
 # @login_required
 def shipment_detail(request, pk):
     shipment = get_object_or_404(Shipment, pk=pk)
