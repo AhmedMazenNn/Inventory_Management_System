@@ -1,0 +1,12 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ul{
+    padding: 10px;
+    margin: 10px;
+}
+.rounded-circle {
+    object-fit: cover;
+}
