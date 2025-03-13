@@ -18,8 +18,8 @@ class Shipment(models.Model):
         return f"Shipment {self.id} from {self.factory_name}"
 
 class ShipmentItem(models.Model):
-    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL, related_name='shipment_items')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL)
+    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL, null=True, related_name='shipment_items')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField()
 
     def __str__(self):

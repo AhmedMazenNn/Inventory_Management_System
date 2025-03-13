@@ -1,0 +1,47 @@
+{% extends './base.html' %}
+
+{% block content %}
+<h1>Create Order</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ order_form.as_p }}
+
+    <h2>Order Items</h2>
+    <div id="order-items">
+        <div class="order-item">
+            <label for="product_1">Product:</label>
+            <select name="product_1" id="product_1">
+                {% for product in products %}
+                    <option value="{{ product.id }}">{{ product.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="quantity_1">Quantity:</label>
+            <input type="number" name="quantity_1" id="quantity_1" min="1" required>
+        </div>
+    </div>
+
+    <button type="button" id="add-item">Add Another Item</button>
+    <button type="submit">Create Order</button>
+</form>
+
+<script>
+    // JavaScript to dynamically add more product fields
+    let itemCount = 1;
+    document.getElementById('add-item').addEventListener('click', function() {
+        itemCount++;
+        const newItem = document.createElement('div');
+        newItem.classList.add('order-item');
+        newItem.innerHTML = `
+            <label for="product_${itemCount}">Product:</label>
+            <select name="product_${itemCount}" id="product_${itemCount}">
+                {% for product in products %}
+                    <option value="{{ product.id }}">{{ product.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="quantity_${itemCount}">Quantity:</label>
+            <input type="number" name="quantity_${itemCount}" id="quantity_${itemCount}" min="1" required>
+        `;
+        document.getElementById('order-items').appendChild(newItem);
+    });
+</script>
+{% endblock %}
