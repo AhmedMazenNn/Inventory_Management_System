@@ -8,17 +8,17 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Create Shipment</h2>
-    <!--shipment creation form-->    
+    <!--shipment creation form-->
     <form method="POST">
         {% csrf_token %}
-    <!--factory name input-->
+        <!--factory name input-->
         <div class="mb-3">
             <label for="factory_name" class="form-label">factory_name</label>
             <input type="text" class="form-control" id="factory_name" name="factory_name" required>
         </div>
 
 
-        <!--status dropdown-->  
+        <!--status dropdown-->
         <div class="mb-3">
             <label for="status" class="form-label">status</label>
             <select class="form-select" id="status" name="status">
@@ -43,7 +43,7 @@
         </div>
 
 
-        <!--submit button-->       
+        <!--submit button-->
         <button type="submit" class="btn btn-success">Create</button>
     </form>
 </div>
