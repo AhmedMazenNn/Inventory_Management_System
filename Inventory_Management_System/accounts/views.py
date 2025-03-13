@@ -39,3 +39,9 @@ class RegisterEmployeeView(LoginRequiredMixin, UserPassesTestMixin, View):
             messages.success(request, f"Employee '{user.username}' registered successfully.")
             return redirect("dashboard")
         return render(request, self.template_name, {"form": form})
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.role == "manager":
+            messages.warning(request, "You do not have permission to add employees.")
+            return redirect("dashboard")
+        return super().dispatch(request, *args, **kwargs)
