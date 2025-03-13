@@ -1,0 +1,16 @@
+{% extends "base/base.html" %}
+{% load crispy_forms_tags %}
+{% block main_content %}
+<div class="container">
+    <h2 class="fw-bolder mt-4"><u>Register Employee</u></h2>
+    <div class="p-4">
+        <div class="form-container" style="max-height: 300px; overflow-y: auto;">
+            <form method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-success fw-bolder mt-3">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
