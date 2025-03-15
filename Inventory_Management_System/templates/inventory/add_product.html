@@ -1,0 +1,107 @@
+{% extends 'base/base.html' %}
+{% block style %}
+<style>
+form div{
+    margin-top: 10px;
+}
+
+</style>
+{% endblock style %}
+
+
+{% block content %}
+<div class="container">
+<h1 class="mt-4 text-center">{{form_name}}</h1>
+<hr>
+<form method="post" enctype="multipart/form-data" class="{{ form_class_name }}">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+        <label class="form-label">{{field.label}}</label>
+        {{field}}
+        {% if field.errors %}
+        <ul>
+            {% for error in field.errors %}
+            <li style="color: red;"> {{error}} </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% if form.non_field_errors %}
+    <ul>
+        {% for error in form.non_field_errors %}
+        <li style="color: red;">{{error}}</li>
+        {% endfor %}
+    </ul>  
+    {% endif %}
+    <button type="submit" class="btn mt-4 w-25 " style="background-color: thistle;"> {{btn_name}} </button>
+</form>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    window.addEventListener("load",function(){
+        let elements = ["id_name", "id_quantity", "id_critical_quantity","id_description"]
+        elements.forEach(id => {
+            document.getElementById(id)?.classList.add("form-control");
+        });
+    });
+
+    
+</script>
+{% endblock script %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Add Product</h1>
+    <form action="{% url 'add_product' %}" method="post" >
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label class="form-label">{{field.label}}</label>
+            {{field}}
+            {% if field.errors %}
+            <ul>
+                {% for error in field.errors %}
+                <li style="color: red;"> {{error}} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% if form.non_field_errors %}
+        <ul>
+            {% for error in form.non_field_errors %}
+            <li style="color: red;">{{error}}</li>
+            {% endfor %}
+        </ul>  
+        {% endif %}
+        <button type="submit">Add Product</button>
+    </form>
+    action="{% url 'add_product' %}"
+</body>
+</html> -->

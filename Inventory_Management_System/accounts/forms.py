@@ -1,0 +1,50 @@
+from django.contrib.auth import get_user_model
+from django import forms
+from django.core.exceptions import ValidationError
+import re
+
+User = get_user_model()
+
+
+class EmployeeRegistrationForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        min_length=8,
+        help_text="Password must be at least 8 characters long and contain both letters and numbers.",
+    )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput,
+        label="Confirm Password"
+    )
+
+    class Meta:
+        model = User
+        fields = ["username", "email", "password", "confirm_password"]
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("This username is already taken.")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("This email is already registered.")
+        return email
+
+    def clean_password(self):
+        password = self.cleaned_data.get("password")
+        if not re.search(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", password):
+            raise ValidationError("Password must contain at least one letter and one number.")
+        return password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if password and confirm_password and password != confirm_password:
+            raise ValidationError("Passwords do not match.")
+        
+        return cleaned_data
