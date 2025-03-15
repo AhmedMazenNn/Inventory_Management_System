@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.db import models
 from accounts.models import User
 from inventory.models import Product
@@ -21,13 +20,8 @@ class Shipment(models.Model):
         db_table = "shipment"
 
 class ShipmentItem(models.Model):
-<<<<<<< HEAD
-    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL, null=True ,related_name='shipment_items')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL ,null=True )
-=======
-    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL,null=True, related_name='shipment_items')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
->>>>>>> origin/Atyya
+    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL, related_name='shipment_items')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL)
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
@@ -35,5 +29,3 @@ class ShipmentItem(models.Model):
     class Meta():
         db_table = "shipment_item"
 
-=======
->>>>>>> origin/Mazen

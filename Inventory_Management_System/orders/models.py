@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.db import models
 from accounts.models import User
 from inventory.models import Product
@@ -21,13 +20,8 @@ class Order(models.Model):
         db_table = "oreder"
 
 class OrderItem(models.Model):
-<<<<<<< HEAD
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True ,related_name='order_items')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL ,null=True )
-=======
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL,null=True, related_name='order_items')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
->>>>>>> origin/Atyya
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, related_name='order_items')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL)
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
@@ -36,5 +30,3 @@ class OrderItem(models.Model):
         db_table = "order_item"
 
 
-=======
->>>>>>> origin/Mazen
