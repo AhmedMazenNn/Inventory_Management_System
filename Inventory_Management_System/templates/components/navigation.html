@@ -1,10 +1,10 @@
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/navigation.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/navigation.css' %}" />
 
 <nav class="sticky-top navbar navbar-expand-lg navbar-dark bg-dark shadow py-2">
     <div class="container">
-        <a class="navbar-brand fw-bold text-warning" href="#">IMS</a>
+        <a class="navbar-brand fw-bold text-warning" href="{% url 'home' %}">IMS</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -13,14 +13,15 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto d-lg-flex flex-lg-row flex-column text-center">
                 <li class="nav-item mb-3 mb-lg-0 me-lg-3">
-                    <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link" href="#">
+                    <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link" href="{% url 'list_all' %}">
                         Inventory <i class="fa-solid fa-warehouse"></i>
                     </a>
                 </li>
                 <li class="nav-item mb-3 mb-lg-0 me-lg-3">
-                    <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link" href="#">
+                    <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link"
+                        href="{% url 'shipment_list' %}">
                         Shipments <i class="fa-solid fa-truck"></i>
-                    </a> 
+                    </a>
                 </li>
                 <li class="nav-item mb-3 mb-lg-0">
                     <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link" href="#">
@@ -28,7 +29,7 @@
                     </a>
                 </li>
             </ul>
-            
+
             <ul class="navbar-nav ms-auto align-items-center text-center">
                 {% if user.is_authenticated %}
                 <li class="nav-item mb-3 mb-lg-0 me-lg-3">
@@ -43,14 +44,22 @@
                     </form>
                 </li>
                 {% else %}
-                    <li class="nav-item dropdown">
-                        <a class="fw-bold dropdown-toggle btn btn-outline-light w-100 w-lg-auto" href="#" id="authDropdown" role="button" data-bs-toggle="dropdown">
-                            Account
-                        </a>
-                        <ul class="dropdown-menu text-center bg-dark">
-                            <li><a class="dropdown-item text-light" href="{% url 'login' %}">Login</a></li>
-                        </ul>
-                    </li>
+                <li class="nav-item dropdown">
+                    <a class="fw-bold dropdown-toggle btn btn-outline-light w-100 w-lg-auto" href="#" id="authDropdown"
+                        role="button" data-bs-toggle="dropdown">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu text-center bg-dark">
+                        <li>
+                            <a class="dropdown-item text-light" href="{% url 'login' %}"
+                                style="transition: background-color 0.2s; color: white;"
+                                onmouseover="this.style.backgroundColor='#343a40'; this.style.color='lightgray';"
+                                onmouseout="this.style.backgroundColor=''; this.style.color='white';">
+                                Login
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 {% endif %}
             </ul>
         </div>

@@ -1,18 +1,18 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block main_content %}
+{% block content %}
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow-sm p-4 text-center">
                 <h2 class="fw-bold">Welcome, {{ user.username }}</h2>
                 <p class="text-muted">{{ user.get_role_display }}</p>
-                
+
                 {% if user.role == "manager" %}
-                    <p class="fw-bold text-primary">You have manager privileges.</p>
+                <p class="fw-bold text-primary">You have manager privileges.</p>
                 {% else %}
-                    <p class="fw-bold text-success">You have employee privileges.</p>
+                <p class="fw-bold text-success">You have employee privileges.</p>
                 {% endif %}
             </div>
 
@@ -24,16 +24,16 @@
                     <a href="#" class="btn btn-outline-primary">View Products</a>
 
                     {% if user.role == "employee" or user.role == "manager" %}
-                        <a href="#" class="btn btn-outline-success">Add Order</a>
-                        <a href="#" class="btn btn-outline-success">Add Shipment</a>
+                    <a href="#" class="btn btn-outline-success">Add Order</a>
+                    <a href="#" class="btn btn-outline-success">Add Shipment</a>
                     {% endif %}
 
-                    
+
                     <a href="{% url 'register_employee' %}" class="btn btn-outline-warning">Add Employee</a>
-                    
+
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock main_content %}
+{% endblock content %}

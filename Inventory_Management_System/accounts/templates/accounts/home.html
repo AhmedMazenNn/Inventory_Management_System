@@ -1,0 +1,64 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <div class="text-center mb-4">
+            {% if user.is_authenticated %}
+            <h2 class="fw-bold text-success">Welcome, {{ user.username }}! 👋</h2>
+            {% else %}
+            <h2 class="fw-bold text-info">Welcome to Our Inventory System! 🚀</h2>
+            {% endif %}
+        </div>
+
+        <div class="text-center mb-5">
+            <h1 class="fw-bold text-primary display-3">
+                <span class="text-warning">Inventory</span> Management <span class="text-success">System</span>
+            </h1>
+            <p class="lead text-muted bg-light p-3 rounded shadow-sm">
+                <span class="text-info fw-bolder">Manage</span> your <span
+                    class="text-danger fw-bolder">products</span>,
+                <span class="text-warning fw-bolder">shipments</span>, and <span
+                    class="text-success fw-bolder">orders</span> efficiently.
+            </p>
+        </div>
+
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card shadow-lg p-3 mb-5 bg-body rounded">
+                    <div class="card-body text-center">
+                        <i class="fas fa-box-open fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Products</h5>
+                        <p class="card-text">Manage and track your product inventory.</p>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">View Products</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipments Card -->
+            <div class="col-md-4">
+                <div class="card shadow-lg p-3 mb-5 bg-body rounded">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shipping-fast fa-3x text-success mb-3"></i>
+                        <h5 class="card-title">Shipments</h5>
+                        <p class="card-text">Track incoming and outgoing shipments.</p>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-success">View Shipments</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Card -->
+            <div class="col-md-4">
+                <div class="card shadow-lg p-3 mb-5 bg-body rounded">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shopping-cart fa-3x text-danger mb-3"></i>
+                        <h5 class="card-title">Orders</h5>
+                        <p class="card-text">Manage orders placed by supermarkets.</p>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-danger">View Orders</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
