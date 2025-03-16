@@ -4,7 +4,7 @@
 
 <nav class="sticky-top navbar navbar-expand-lg navbar-dark bg-dark shadow py-2">
     <div class="container">
-        <a class="navbar-brand fw-bold text-warning" href="#">IMS</a>
+        <a class="navbar-brand fw-bold text-warning" href="{% url 'home' %}">IMS</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -48,8 +48,15 @@
                             Account
                         </a>
                         <ul class="dropdown-menu text-center bg-dark">
-                            <li><a class="dropdown-item text-light" href="{% url 'login' %}">Login</a></li>
-                        </ul>
+                            <li>
+                                <a class="dropdown-item text-light" href="{% url 'login' %}"
+                                    style="transition: background-color 0.2s; color: white;"
+                                    onmouseover="this.style.backgroundColor='#343a40'; this.style.color='lightgray';"
+                                    onmouseout="this.style.backgroundColor=''; this.style.color='white';">
+                                    Login
+                                </a>
+                            </li>
+                        </ul>                                                                   
                     </li>
                 {% endif %}
             </ul>
