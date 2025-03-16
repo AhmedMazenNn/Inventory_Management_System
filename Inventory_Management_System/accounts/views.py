@@ -22,13 +22,10 @@ class DashboardView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, "accounts/dashboard.html")
 
-class RegisterEmployeeView(LoginRequiredMixin, UserPassesTestMixin, View):
+class RegisterEmployeeView(LoginRequiredMixin, View):
     template_name = "accounts/register_employee.html"
-
-    def test_func(self):
-        return self.request.user.role == "manager"
-
     def get(self, request):
+
         form = EmployeeRegistrationForm()
         return render(request, self.template_name, {"form": form})
 
@@ -44,7 +41,7 @@ class RegisterEmployeeView(LoginRequiredMixin, UserPassesTestMixin, View):
         return render(request, self.template_name, {"form": form})
     
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.role == "manager":
+        if  request.user.role == "employee"  and not request.user.is_superuser :
             messages.warning(request, "You do not have permission to add employees.")
             return redirect("dashboard")
         return super().dispatch(request, *args, **kwargs)
