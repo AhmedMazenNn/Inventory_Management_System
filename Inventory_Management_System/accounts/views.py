@@ -11,6 +11,7 @@ User = get_user_model()
 
 class LoginView(AuthLoginView):
     template_name = "accounts/login.html"
+    next_page = "home"
 
 class LogoutView(AuthLogoutView):
     next_page = "login"

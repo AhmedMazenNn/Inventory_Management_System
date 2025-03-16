@@ -18,7 +18,7 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id} for {self.supermarket_name}"
     class Meta():
-        db_table = "oreder"
+        db_table = "order"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL,null=True, related_name='order_items')

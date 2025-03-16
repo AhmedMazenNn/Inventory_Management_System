@@ -22,7 +22,7 @@
 
         {% for form in formset %}
         <div class="shipment-item-form">
-            {{ form|crispy }}
+            {{ form |crispy }}
         </div>
         {% endfor %}
 
@@ -30,3 +30,5 @@
     </form>
 </div>
 {% endblock %}
+{% block script %}
+{% endblock script %}
