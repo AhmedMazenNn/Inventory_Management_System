@@ -9,6 +9,8 @@ from django.contrib import messages
 
 User = get_user_model()
 
+def home(request):
+    return render(request, "accounts/home.html")
 class LoginView(AuthLoginView):
     template_name = "accounts/login.html"
 
