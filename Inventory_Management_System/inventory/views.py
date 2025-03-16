@@ -1,10 +1,16 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Product
 from .forms import ProductForm
 from django.urls import reverse_lazy
 from django.contrib import messages
+import pandas as pd 
+import matplotlib.pyplot as plt
+import io
+import seaborn as sns
+from django.db import connection
+import base64
 
 
 #in home page
@@ -58,7 +64,27 @@ class create_product(CreateView):
         form.fields['name'].widget.attrs.update({'autofocus': 'autofocus'})
         return form
 
-    
+class Dashboard(View):
+    def get(self, request):
+        return render(request, "accounts/dashboard.html")
+    def post(self, request, query_name):
+        if query_name == 'product':
+            products = Product.objects.values("name", "quantity")
+            df = pd.DataFrame(list(products))
+        print(df)
+        plt.figure(figsize=(10,5))
+        sns.barplot(x="name", y="quantity", data=df)
+        plt.title("Product Quantity")
+        plt.xlabel("Product Name")
+        plt.ylabel("Quantity")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        img = io.BytesIO()
+        plt.savefig(img, format="png")
+        img.seek(0)
+        plt.close()
+        image = base64.b64encode(img.getvalue()).decode("utf-8")
+        return render(request, "accounts/dashboard.html", {"img": image })
 
 
 

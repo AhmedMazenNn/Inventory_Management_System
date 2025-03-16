@@ -1,8 +1,8 @@
 {% extends "base/base.html" %}
 {% load crispy_forms_tags %}
 
-{% block main_content %}
-    <div class="content-section">
+{% block content %}
+    <div class="content-section container">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
@@ -16,8 +16,8 @@
         <div class="border-top pt-3">
             <small class="text-muted">
                 Need an account?
-                <a class="ml-2" href="#">Sign In Now</a>
+                <a class="ml-2" href="{% url 'register_employee' %}">Register Now</a>
             </small>
         </div>
     </div>
-{% endblock main_content %}
+{% endblock content %}

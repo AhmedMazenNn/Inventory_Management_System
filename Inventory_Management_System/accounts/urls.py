@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from .views import LoginView, LogoutView, DashboardView, RegisterEmployeeView
 
 urlpatterns = [
-    path("", lambda request: redirect("login")),  # Redirect 'accounts/' to 'accounts/login/'
+    path("", lambda request: redirect("login")), 
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("dashboard/", DashboardView.as_view(), name="dashboard"),

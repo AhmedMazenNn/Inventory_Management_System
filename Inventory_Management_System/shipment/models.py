@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.db import models
 from accounts.models import User
 from inventory.models import Product
@@ -30,5 +29,3 @@ class ShipmentItem(models.Model):
     class Meta():
         db_table = "shipment_item"
 
-=======
->>>>>>> origin/Mazen
