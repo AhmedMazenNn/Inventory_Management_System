@@ -17,8 +17,11 @@ from django.db import connection
 
 User = get_user_model()
 
+def homee(request):
+    return render(request, "accounts/homee.html")
 class LoginView(AuthLoginView):
     template_name = "accounts/login.html"
+    next_page= "homee"
 
 class LogoutView(AuthLogoutView):
     next_page = "login"

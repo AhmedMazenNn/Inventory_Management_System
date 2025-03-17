@@ -17,7 +17,7 @@ def order_detail(request, order_id):
     return render(request, 'orders/order_detail.html', {'order': order, 'order_items': order_items})
 
 @login_required
-def create_order(request):
+def createOrder(request):
     products = Product.objects.filter(quantity__gt=0) 
     if request.method == 'POST':
         order_form = OrderForm(request.POST)

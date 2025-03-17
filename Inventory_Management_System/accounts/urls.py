@@ -1,6 +1,6 @@
 from django.urls import path
 from django.shortcuts import redirect
-from .views import LoginView, LogoutView, DashboardView, RegisterEmployeeView
+from .views import LoginView, LogoutView, DashboardView, RegisterEmployeeView , homee
 
 urlpatterns = [
     path("", lambda request: redirect("login")), 
@@ -8,4 +8,5 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("dashboard/", DashboardView.as_view(), name="dashboard"),
     path("register-employee/", RegisterEmployeeView.as_view(), name="register_employee"),
+    path("", homee, name="homee"),
 ]

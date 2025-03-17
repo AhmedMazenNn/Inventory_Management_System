@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} Create Shipment {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Create Shipment</h2>
+    <!--shipment creation form-->
+    <!--shipment creation form-->
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Render the main shipment form -->
+        {{ shipment_form|crispy }}
+
+        <h2>Add Products</h2>
+        {{ formset.management_form }}
+
+        {% for form in formset %}
+        <div class="shipment-item-form">
+            {{ form|crispy }}
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Save Shipment</button>
+    </form>
+</div>
+{% endblock %}

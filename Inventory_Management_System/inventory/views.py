@@ -17,35 +17,35 @@ def search_product(request):
     products = Product.objects.all()
     if query:
         products = products.filter(name__icontains=query)
-    return render(request,"inventory/home.html",context={"products":products,"query":query})
+    return render(request,"inventory/inventory.html",context={"products":products,"query":query})
 
 
 
 def home_page(request):
-    return render(request,"inventory/home.html")
+    return render(request,"inventory/inventory.html")
 
-class List_all_products(ListView):
+class List_all_products(LoginRequiredMixin,ListView):
     model = Product
-    template_name = 'inventory/home.html'
+    template_name = 'inventory/inventory.html'
     context_object_name = 'products'
 
 
-class Update_product(UpdateView):
+class Update_product(LoginRequiredMixin,UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'inventory/add_product.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('inventory')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form_name"] = "Update Product"
         context["btn_name"] = "Update_product"
         return context
 
-class create_product(CreateView):
+class create_product(LoginRequiredMixin,CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'inventory/add_product.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('inventory')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form_name"] = "Add Product"
@@ -62,7 +62,7 @@ class create_product(CreateView):
         form.fields['name'].widget.attrs.update({'autofocus': 'autofocus'})
         return form
 
-class Dashboard(View):
+class Dashboard(LoginRequiredMixin,View):
     def get(self, request):
         return render(request, "accounts/dashboard.html")
     def post(self, request, query_name):
