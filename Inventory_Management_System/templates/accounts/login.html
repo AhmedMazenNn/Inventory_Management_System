@@ -1,8 +1,8 @@
 {% extends "base/base.html" %}
 {% load crispy_forms_tags %}
 
-{% block main_content %}
-    <div class="content-section">
+{% block content %}
+    <div class="content-section container">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
@@ -20,4 +20,4 @@
             </small>
         </div>
     </div>
-{% endblock main_content %}
+{% endblock content %}

@@ -20,8 +20,8 @@ class Shipment(models.Model):
         db_table = "shipment"
 
 class ShipmentItem(models.Model):
-    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL, related_name='shipment_items')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL)
+    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL,null=True, related_name='shipment_items')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True,)
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
