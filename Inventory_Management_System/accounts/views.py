@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .forms import EmployeeRegistrationForm
 from django.contrib import messages
-
+#test
 
 User = get_user_model()
 
