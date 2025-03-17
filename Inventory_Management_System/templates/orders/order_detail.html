@@ -1,0 +1,62 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Order Details</h1>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th scope="row">Order ID</th>
+                <td>{{ order.id }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Supermarket</th>
+                <td>{{ order.supermarket_name }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Status</th>
+                <td>{{ order.status }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Created by</th>
+                <td>{{ order.created_by }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 class="mt-4">Order Items</h2>
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">No items in this order.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="mt-4">
+        {% if request.user.role != 'employee' or order.status != 'Approved' %}
+        <a href="{% url 'orders:add_order_item' order.id %}" class="btn btn-primary">Add Item</a>
+        {% endif %}
+
+        {% if request.user.role == 'manager' and order.status == 'Pending' %}
+        <a href="{% url 'orders:approve_order' order.id %}" class="btn btn-success">Approve Order</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

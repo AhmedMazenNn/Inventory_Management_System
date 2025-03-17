@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Add Item to Order</h1>
+
+    <form method="post" class="card p-4 shadow-sm">
+        {% csrf_token %}
+        
+        {{ item_form|crispy }}
+
+        <button type="submit" class="btn btn-primary">Add Item</button>
+        <a href="{% url 'orders:order_detail' order.id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
