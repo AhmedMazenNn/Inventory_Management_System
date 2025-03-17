@@ -30,12 +30,13 @@
                     <a href="{% url 'register_employee' %}" class="btn btn-outline-warning">Add Employee</a>
                 </div>
             </div>
-            <div class="container mt-4">
-                {% if img %}
-                <img src="data:image/png;base64,{{ img }}" alt="Product Quantity Chart">
-                {% endif %}
-            </div>
         </div>
     </div>
 </div>
+<div id="chart" class="border shadow border-4 container rounded-3">
+    {{img|safe}}
+</div>
 {% endblock content %}
+{% block script %}
+
+{% endblock script %}

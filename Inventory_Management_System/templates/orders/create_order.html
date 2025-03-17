@@ -1,6 +1,6 @@
 {% extends "base/base.html" %}
 
-{% block main_content %}
+{% block content %}
 <h1>Create Order</h1>
 <form method="post">
     {% csrf_token %}
@@ -44,4 +44,4 @@
         document.getElementById('order-items').appendChild(newItem);
     });
 </script>
-{% endblock %}
+{% endblock content %}

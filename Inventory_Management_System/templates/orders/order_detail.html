@@ -1,5 +1,5 @@
 <!-- orders/order_detail.html -->
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 
 {% block content %}
 <h1>Order {{ order.id }}</h1>
@@ -19,4 +19,4 @@
 {% if request.user.is_manager and order.status == 'Pending' %}
 <a href="{% url 'approve_order' order.id %}">Approve Order</a>
 {% endif %}
-{% endblock %}
+{% endblock content %}

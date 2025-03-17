@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
-from models import Shipment, ShipmentItem
-from forms import ShipmentForm,ShipmentItemFormSet
+from .models import Shipment, ShipmentItem
+from .forms import ShipmentForm,ShipmentItemFormSet
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 

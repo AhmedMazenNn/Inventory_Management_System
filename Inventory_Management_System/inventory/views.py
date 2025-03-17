@@ -6,12 +6,10 @@ from .forms import ProductForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 import pandas as pd 
-import matplotlib.pyplot as plt
-import io
-import seaborn as sns
-from django.db import connection
-import base64
-
+import plotly
+import plotly.express as px
+import json
+import plotly.offline as pyo
 
 #in home page
 def search_product(request):
@@ -71,19 +69,15 @@ class Dashboard(View):
         if query_name == 'product':
             products = Product.objects.values("name", "quantity")
             df = pd.DataFrame(list(products))
-        print(df)
-        plt.figure(figsize=(10,5))
-        sns.barplot(x="name", y="quantity", data=df)
-        plt.title("Product Quantity")
-        plt.xlabel("Product Name")
-        plt.ylabel("Quantity")
-        plt.xticks(rotation=45)
-        plt.tight_layout()
-        img = io.BytesIO()
-        plt.savefig(img, format="png")
-        img.seek(0)
-        plt.close()
-        image = base64.b64encode(img.getvalue()).decode("utf-8")
+            fig = px.bar(df, y="quantity", x="name", title="Product Quantity", text="quantity")
+            fig.update_layout(paper_bgcolor="yellow", plot_bgcolor="yellow")
+            image = pyo.plot(fig, output_type="div")
+        elif query_name == 'shipment':
+            pass
+        elif query_name == 'order':
+            pass
+        else:
+            pass
         return render(request, "accounts/dashboard.html", {"img": image })
 
 
