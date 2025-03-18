@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
 
+<<<<<<< HEAD
 
 {% block content %}
 <h1>Orders</h1>
@@ -14,3 +15,48 @@
     {% endfor %}
 </ul>
 {% endblock content %}
+=======
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Orders</h1>
+    
+    <a href="{% url 'orders:create_order' %}" class="btn btn-primary mb-3">Create New Order</a>
+
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Supermarket</th>
+                <th>Status</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ order.supermarket_name }}</td>
+                <td>
+                    <span class="badge 
+                        {% if order.status == 'Pending' %}bg-warning
+                        {% elif order.status == 'Approved' %}bg-success
+                        {% else %}bg-secondary{% endif %}">
+                        {{ order.status }}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'orders:order_detail' order.id %}" class="btn btn-info btn-sm">
+                        View Details
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No orders available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+>>>>>>> origin/zaky

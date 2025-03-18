@@ -7,9 +7,19 @@
         <div class="col-md-8">
             <div class="card shadow-sm p-4 text-center">
                 <h2 class="fw-bold">Welcome, {{ user.username }}</h2>
+                <!-- <h2>{{ user.is_superuser }}</h2> -->
+                {% if user.is_superuser %}
+                <p class="text-muted">super user</p>
+                {% else %}
                 <p class="text-muted">{{ user.get_role_display }}</p>
+<<<<<<< HEAD
                 {% if user.role == 'manager' %}
                     <p class="fw-bold text-primary">You have manager privileges.</p>
+=======
+                {% endif %}
+                {% if user.role == "manager" or user.is_superuser %}
+                <p class="fw-bold text-primary">You have manager privileges.</p>
+>>>>>>> origin/zaky
                 {% else %}
                 <p class="fw-bold text-success">You have employee privileges.</p>
                 {% endif %}
