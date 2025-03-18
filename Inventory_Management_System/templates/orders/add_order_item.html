@@ -1,15 +1,4 @@
 {% extends 'base/base.html' %}
-<<<<<<< HEAD
-
-{% block content %}
-<h1>Add Item to Order</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ item_form.as_p }}
-    <button type="submit">Add Item</button>
-</form>
-{% endblock content %}
-=======
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -26,4 +15,3 @@
     </form>
 </div>
 {% endblock %}
->>>>>>> origin/zaky

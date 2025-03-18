@@ -1,17 +1,11 @@
 {% extends "base/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<<<<<<< HEAD
 {% block content %}
 <div class="container">
     <h2 class="fw-bolder mt-4"><u>Register Employee</u></h2>
     <div class="p-4">
         <div class="form-container">
-=======
-<div class="container mb-4 vh-100">
-    <h2 class="fw-bolder mt-4 "><u>Register Employee</u></h2>
-        <div class="form-container" style="max-height: 300px;">
->>>>>>> origin/zaky
             <form method="post">
                 {% csrf_token %}
                 {{ form|crispy }}

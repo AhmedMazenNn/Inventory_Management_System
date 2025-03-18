@@ -1,21 +1,5 @@
 {% extends "base/base.html" %}
 
-<<<<<<< HEAD
-
-{% block content %}
-<h1>Orders</h1>
-<a href="{% url 'orders:create_order' %}">Create New Order</a>
-<ul>
-    {% for order in orders %}
-    <li>
-        <a href="{% url 'orders:order_detail' order.id %}">
-            Order {{ order.id }} for {{ order.supermarket_name }} ({{ order.status }})
-        </a>
-    </li>
-    {% endfor %}
-</ul>
-{% endblock content %}
-=======
 {% block content %}
 <div class="container mt-4">
     <h1 class="mb-4">Orders</h1>
@@ -59,4 +43,3 @@
     </table>
 </div>
 {% endblock %}
->>>>>>> origin/zaky
