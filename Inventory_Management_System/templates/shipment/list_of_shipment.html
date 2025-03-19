@@ -6,22 +6,12 @@
 
 {% block content %}
 
-<div class="container">
-    <!--page title-->
-    <h2>shipments list</h2>
-
-    <!--search and add shipment section-->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <button class="btn btn-info">
-            
-            <i class="bi bi-plus-lg"></i> add shipment
-
-        </button>
-        <input type="text" class="form-control search-box" placeholder="search...">
-    </div>
-
-
-
+<div class="container mt-4">
+    <h2 class="text-center text-danger">Shipments List</h2>
+    <!--button to create a new shipment-->
+    <a class="btn btn-success" href="{% url 'shipment:create_shipment' %}">
+        <i class="bi bi-plus-lg"></i> Add Shipment
+    </a>
     <!--shipments table-->
     <div class="table-responsive">
         <table class="table table-striped shipment-table">
@@ -51,18 +41,14 @@
 
                     </td>
                     <td>{{ shipment.date }}</td>
-                    <td class="action-buttons">
-                        <button class="btn btn-info btn-sm">
-                            <i class="bi bi-eye"></i> view
-                        </button>
-
-
-                        <button class="btn btn-warning btn-sm">
-                            <i class="bi bi-pencil"></i> edit
-                        </button>
-                        <button class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash"></i> delete
-                        </button>
+                    <td>{{ shipment.created_by }}</td>
+                    <td>{{ shipment.approved_by }}</td>
+                    <!--actions for each shipment(view/edit/delete)-->
+                    <td>
+                        <a href="#" class="btn btn-info btn-sm">View</a>
+                        <a href="{% url 'shipment:update_shipment' pk=shipment.id %}"
+                            class="btn btn-warning btn-sm">Edit</a>
+                        <button class="btn btn-danger btn-sm" type="button">Delete</button>
                     </td>
                 </tr>
 
@@ -74,8 +60,10 @@
 
             </tbody>
         </table>
-    </div>
 
+
+
+    </div>
     <!--pagination-->
     <div class="d-flex justify-content-between align-items-center mt-3">
         <span class="text-muted">showing {{ shipments|length }} of {{ total_shipments }} entries</span>

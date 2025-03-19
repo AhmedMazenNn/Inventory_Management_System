@@ -1,3 +1,4 @@
+
 from django.db import models
 from accounts.models import User
 from inventory.models import Product
@@ -15,6 +16,8 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order {self.id} for {self.supermarket_name}"
+    class Meta():
+        db_table = "order"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, related_name='order_items')
@@ -23,5 +26,6 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} of {self.product.name}"
+
 
 

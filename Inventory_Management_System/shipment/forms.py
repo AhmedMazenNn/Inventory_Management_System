@@ -19,9 +19,18 @@ class ShipmentItemForm(forms.ModelForm):
             'product': forms.Select(),
         }
 
-ShipmentItemFormSet = inlineformset_factory(
+ShipmentItemFormSet = forms.inlineformset_factory(
     Shipment, ShipmentItem, 
     form=ShipmentItemForm, 
-    extra=1, 
-    can_delete=True 
+    extra=0,
+    can_delete=False    
 )
+
+
+UpdateShipmentItemFormSet = forms.inlineformset_factory(
+    Shipment, ShipmentItem, 
+    form=ShipmentItemForm, 
+    extra=0,
+    can_delete=True  
+)
+ShipmentItemFormSet.empty_permitted = False 

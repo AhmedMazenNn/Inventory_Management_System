@@ -1,53 +1,72 @@
 {% extends 'base/base.html' %}
 
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block title %} Update Shipment {% endblock %}
 
 {% block content %}
-
 <div class="container mt-4">
     <h2>Update Shipment</h2>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show w-50" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
 
-
-    <!--shipment update form-->    
     <form method="POST">
         {% csrf_token %}
+        {{ shipment_form|crispy }}
 
-    <!--factory name input-->
-        <div class="mb-3">
-            <label for="factory_name" class="form-label">factory_name</label>
-            <input type="text" class="form-control" id="factory_name" name="factory_name" value="{{ shipment.factory_name }}" required>
+        <h2>Update Products</h2>
+        <div id="formset-management">
+            {{ formset.management_form }}
         </div>
 
-
-        <!--status dropdown-->        
-        <div class="mb-3">
-            <label for="status" class="form-label">status</label>
-            <select class="form-select" id="status" name="status">
-                <option value="Pending" {% if shipment.status == 'Pending' %}selected{% endif %}>Pending</option>
-                <option value="Approved" {% if shipment.status == 'Approved' %}selected{% endif %}>Approved</option>
-                <option value="Delivered" {% if shipment.status == 'Delivered' %}selected{% endif %}>Delivered</option>
-            </select>
+        <div id="shipment-items">
+            {% for form in formset %}
+            <div class="shipment-item-form">
+                {{ form|crispy }}
+                <button type="button" class="btn btn-danger btn-sm remove-product">Remove</button>
+            </div>
+            {% endfor %}
         </div>
 
-
-
-
-        <!--created by input-->       
-        <div class="mb-3">
-            <label for="created_by" class="form-label">created_by</label>
-            <input type="text" class="form-control" id="created_by" name="created_by" value="{{ shipment.created_by }}">
-        </div>
-
-
-        <!--approved by input-->
-        <div class="mb-3">
-            <label for="approved_by" class="form-label">approved_by</label>
-            <input type="text" class="form-control" id="approved_by" name="approved_by" value="{{ shipment.approved_by }}">
-        </div>
-        <!--submit button-->
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="button" id="add-product" class="btn btn-success">Add Product</button>
+        <button type="submit" class="btn btn-primary">Save Shipment</button>
     </form>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let formsetPrefix = "{{ formset.prefix }}";
+        let formIdx = parseInt("{{ formset.total_form_count }}");
+
+        function addProduct() {
+            let emptyFormHtml = `{{ formset.empty_form|crispy|escapejs }}`.replace(/__prefix__/g, formIdx);
+            let newForm = document.createElement("div");
+            newForm.classList.add("shipment-item-form");
+            newForm.innerHTML = emptyFormHtml + `<button type="button" class="btn btn-danger btn-sm remove-product">Remove</button>`;
+            document.getElementById("shipment-items").appendChild(newForm);
+            formIdx++;
+            document.querySelector(`#id_${formsetPrefix}-TOTAL_FORMS`).value = formIdx;
+        }
+
+        function removeProduct(event) {
+            if (event.target.classList.contains("remove-product")) {
+                event.target.closest(".shipment-item-form").remove();
+                formIdx--;
+                document.querySelector(`#id_${formsetPrefix}-TOTAL_FORMS`).value = formIdx;
+            }
+        }
+
+        document.getElementById("add-product").addEventListener("click", addProduct);
+        document.getElementById("shipment-items").addEventListener("click", removeProduct);
+    });
+</script>
 {% endblock %}
