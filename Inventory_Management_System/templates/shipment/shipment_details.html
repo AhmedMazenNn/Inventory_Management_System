@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %} Shipment Details {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!--page heading-->
+    <h2 class="text-center text-info">Shipment Details</h2>
+    
+
+
+    <!--shipment details card-->
+    <div class="shipment-details-card">
+        <!--display shipment id-->
+        <h3>Shipment ID: {{ shipment.id }}</h3>
+        
+
+
+
+        <!--display factory nam-->
+        <p><strong>Factory Name:</strong> {{ shipment.factory_name }}</p>
+        
+        <!--display shipment status with a color coded badge-->
+        <p><strong>Status:</strong> 
+            <span class="badge 
+                {% if shipment.status == 'Pending' %} bg-warning 
+                {% elif shipment.status == 'Approved' %} bg-primary 
+                {% else %} bg-success {% endif %}">
+                {{ shipment.status }}
+            </span>
+        </p>
+        
+
+
+        <!--display the shipment date-->
+        <p><strong>Date:</strong> {{ shipment.date }}</p>
+        
+        <!--display the creator of the shipment-->
+        <p><strong>Created By:</strong> {{ shipment.created_by }}</p>
+        
+
+
+        <!--display the person who approved the shipment-->
+        <p><strong>Approved By:</strong> {{ shipment.approved_by }}</p>
+        
+
+
+        <!--list of shipment items-->
+        <h4>Shipment Items:</h4>
+        <ul class="list-group">
+            {% for item in shipment.shipment_items.all %}
+            <li class="list-group-item">
+                <!--display the product name and quantity-->
+                {{ item.product.name }} - Quantity: {{ item.quantity }}
+
+
+            </li>
+            {% empty %}
+            <!--if no items exist,display this message-->
+            <li class="list-group-item text-muted">No items available for this shipment.</li>
+            {% endfor %}
+        </ul>
+
+
+        <!--duttons for edit and back to list actions-->
+        <div class="d-flex justify-content-between mt-4">
+            <button type="button" class="btn btn-warning btn-sm" onclick="window.location.href='#'">Update</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="window.location.href='#'">Back to List</button>            
+        </div>
+    </div>
+</div>
+
+{% endblock %}

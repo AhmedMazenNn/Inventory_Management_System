@@ -1,0 +1,116 @@
+{% extends "base/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Create Order</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ order_form.as_p }}
+
+        <h2 class="mt-4">Add Order Items</h2>
+
+        <div class="row g-3 align-items-center mb-3">
+            <div class="col-md-6">
+                <label for="product" class="form-label">Product:</label>
+                <select id="product" class="form-select">
+                    <option value="" selected disabled>Select a product</option>
+                    {% for product in products %}
+                        <option value="{{ product.id }}" data-name="{{ product.name }}" data-quantity="{{ product.quantity }}" data-critical-quantity="{{ product.critical_quantity }}">
+                            {{ product.name }} (Available: {{ product.quantity }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="quantity" class="form-label">Quantity:</label>
+                <input type="number" id="quantity" class="form-control" min="1" value="1">
+            </div>
+            <div class="col-md-3">
+                <button type="button" id="add-item" class="btn btn-success">Add Item</button>
+            </div>
+        </div>
+
+        <h3 class="mt-4">Order Items</h3>
+        <table class="table table-striped" id="order-items-table">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="order-items-body">
+                <tr id="no-items">
+                    <td colspan="4" class="text-center">No items added yet.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <input type="hidden" name="order_items" id="order-items-input">
+
+        <button type="submit" class="btn btn-primary">Create Order</button>
+    </form>
+</div>
+
+<script>
+    let itemCount = 0;
+    const orderItems = [];
+
+    document.getElementById('add-item').addEventListener('click', function() {
+        const productSelect = document.getElementById('product');
+        const quantityInput = document.getElementById('quantity');
+        const productId = productSelect.value;
+        const productName = productSelect.options[productSelect.selectedIndex].dataset.name;
+        const productQuantity = parseInt(productSelect.options[productSelect.selectedIndex].dataset.quantity);
+        const productCriticalQuantity = parseInt(productSelect.options[productSelect.selectedIndex].dataset.criticalQuantity);
+        const quantity = parseInt(quantityInput.value);
+
+        if (!productId || quantity < 1) {
+            alert('Please select a product and enter a valid quantity.');
+            return;
+        }
+
+        // Check if the quantity will result in stock going below the critical quantity
+        if (productQuantity - quantity < productCriticalQuantity) {
+            alert(`Cannot add this item. The remaining stock will go below the critical quantity (${productCriticalQuantity}).`);
+            return;
+        }
+
+        itemCount++;
+        orderItems.push({ product_id: productId, quantity: quantity });
+
+        const tableBody = document.getElementById('order-items-body');
+        document.getElementById('no-items').style.display = 'none';
+
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${itemCount}</td>
+            <td>${productName}</td>
+            <td>${quantity}</td>
+            <td><button type="button" class="btn btn-danger btn-sm remove-item">Remove</button></td>
+        `;
+
+        tableBody.appendChild(newRow);
+        updateHiddenInput();
+
+        newRow.querySelector('.remove-item').addEventListener('click', function() {
+            newRow.remove();
+            orderItems.splice(orderItems.findIndex(item => item.product_id === productId), 1);
+            updateHiddenInput();
+            if (orderItems.length === 0) {
+                document.getElementById('no-items').style.display = '';
+            }
+        });
+
+        productSelect.value = '';
+        quantityInput.value = '1';
+    });
+
+    function updateHiddenInput() {
+        document.getElementById('order-items-input').value = JSON.stringify(orderItems);
+    }
+</script>
+{% endblock %}
