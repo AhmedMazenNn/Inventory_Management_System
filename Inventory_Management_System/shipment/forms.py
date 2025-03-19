@@ -22,7 +22,7 @@ class ShipmentItemForm(forms.ModelForm):
 ShipmentItemFormSet = forms.inlineformset_factory(
     Shipment, ShipmentItem, 
     form=ShipmentItemForm, 
-    extra=1,
+    extra=0,
     can_delete=False    
 )
 
