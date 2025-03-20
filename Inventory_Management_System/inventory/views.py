@@ -5,6 +5,7 @@ from .models import Product
 from .forms import ProductForm
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 #in home page
@@ -15,15 +16,15 @@ def search_product(request):
         products = products.filter(name__icontains=query)
     return render(request,"inventory/home.html",context={"products":products,"query":query})
 
-
-
 def home_page(request):
     return render(request,"inventory/home.html")
 
-class List_all_products(ListView):
+class List_all_products(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'inventory/home.html'
     context_object_name = 'products'
+    login_url = 'login'
+    redirect_field_name = 'next'
 
 
 class Update_product(UpdateView):
@@ -57,47 +58,4 @@ class create_product(CreateView):
         form = super().get_form(form_class)
         form.fields['name'].widget.attrs.update({'autofocus': 'autofocus'})
         return form
-
-    
-
-
-
-#in add_order page
-class Create_order():
-    pass
-#in add_shipment page
-class Create_shipment():
-    pass
-#in add_order page
-class Update_order():
-    pass
-#in add_shipment page
-class Update_shipment():
-    pass
-#in orders page
-class Get_all_orders():
-    pass
-#in shipments page
-class Get_all_shipments():
-    pass
-#in details page
-class Order_detalis():
-    pass
-class Shipment_detalis():
-    pass
-# in sinup page
-class Create_user():
-    pass
-#in manager page
-class Approve_order():
-    pass
-class Approve_shipment():
-    pass
-#in marked_products page
-class Show_marked_products():
-    pass
-
-class Filter():
-    pass
-# Create your views here.
 

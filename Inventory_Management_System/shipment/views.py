@@ -5,14 +5,14 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
 
-# @login_required
+@login_required
 def list_shipment(request):
     shipments = Shipment.objects.all()
     return render(request, 'shipment/list_of_shipment.html', {
         'shipments': shipments
     })
 
-# @login_required
+@login_required
 def shipment_detail(request, pk):
     shipment = get_object_or_404(Shipment, pk=pk)
     shipment_items = ShipmentItem.objects.filter(shipment=shipment)
@@ -21,7 +21,7 @@ def shipment_detail(request, pk):
         'shipment_items': shipment_items
     })
 
-# @login_required
+@login_required
 def create_shipment(request):
     if request.method == 'POST':
         shipment_form = ShipmentForm(request.POST)
@@ -44,7 +44,7 @@ def create_shipment(request):
     })
 
 
-# @login_required
+@login_required
 def update_shipment(request, pk):
     shipment = get_object_or_404(Shipment, pk=pk)
     if request.method == 'POST':
