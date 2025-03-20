@@ -45,7 +45,8 @@
                     <td>{{ shipment.approved_by }}</td>
                     <!--actions for each shipment(view/edit/delete)-->
                     <td>
-                        <a href="#" class="btn btn-info btn-sm">View</a>
+                        <a href="{% url 'shipment:shipment_detail' pk=shipment.id %}" 
+                            class="btn btn-info btn-sm">View</a>
                         <a href="{% url 'shipment:update_shipment' pk=shipment.id %}"
                             class="btn btn-warning btn-sm">Edit</a>
                         <button class="btn btn-danger btn-sm" type="button">Delete</button>
