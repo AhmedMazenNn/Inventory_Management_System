@@ -14,6 +14,11 @@ class OrderCreateView(CreateView):
     form_class = OrderForm
     template_name = 'orders/create_order.html'
     success_url = reverse_lazy('orders:order_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form_name"] = "Add Oreder"
+        context["btn_name"] = "Add"
+        return context
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
@@ -35,28 +40,29 @@ class OrderDeleteView(DeleteView):
     model = Order
     template_name = "orders/confirm.html"
     success_url = reverse_lazy("orders:create_order")
-    
     def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context["ordername"] = self.object.supermarket_name if self.object else ''
+        return context
 
 
 class OrderItemCreateView(FormView):
-    template_name = 'orders/add_order_item.html'  # HTML template for adding items
+    template_name = 'orders/create_order.html'  # HTML template for adding items
     form_class = OrderItemForm
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form_name"] = "Add Item"
+        context["btn_name"] = "Add"
+        return context
     def form_valid(self, form):
         order_id = self.kwargs.get('order_id')  
         order = get_object_or_404(Order, id=order_id)  
         order_item = form.save(commit=False)
         order_item.order = order
         order_item.save()
+        return redirect('orders:order_list') 
 
-        return redirect('orders:order_detail', args=[order_id]) 
-
-
-
-
-
+# , args=[order_id]
 
 
 
@@ -71,46 +77,6 @@ def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order_items = order.order_items.all() 
     return render(request, 'orders/order_detail.html', {'order': order, 'order_items': order_items})
-
-# @login_required
-# def create_order(request):
-#     products = Product.objects.filter(quantity__gt=0)  
-#     if request.method == 'POST':
-#         order_form = OrderForm(request.POST)
-       
-#         if order_form.is_valid():
-#             # Save the order
-#             order = order_form.save(commit=False)
-#             order.created_by = request.user
-#             order.save()
-
-#             # Process order items
-#             order_items_json = request.POST.get('order_items')
-#             if order_items_json:
-#                 order_items = json.loads(order_items_json)
-#                 for item in order_items:
-#                     product_id = item['product_id']
-#                     quantity = item['quantity']
-#                     product = get_object_or_404(Product, id=product_id)
-
-#                     # Check if the quantity will result in stock going below the critical quantity
-#                     if product.quantity - quantity < product.critical_quantity:
-#                         # Handle the error (e.g., show a message or roll back the order)
-#                         order.delete()  # Delete the order if the condition is not met
-#                         messages.error(request, f"Cannot add {product.name}. The remaining stock will go below the critical quantity.")
-#                         return redirect('orders:create_order')
-
-#                     # Create the order item
-#                     OrderItem.objects.create(order=order, product=product, quantity=quantity)
-
-#                     # Update the product's quantity
-#                     product.quantity -= quantity
-#                     product.save()
-
-#             return redirect('orders:order_list', order_id=order.id)
-#     else:
-#         order_form = OrderForm()
-#     return render(request, 'orders/create_order.html', {'order_form': order_form, 'products': products})
 
 @login_required
 def add_order_item(request, order_id):

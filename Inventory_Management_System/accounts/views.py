@@ -33,7 +33,6 @@ class DashboardView(LoginRequiredMixin, View):
 class RegisterEmployeeView(LoginRequiredMixin, View):
     template_name = "accounts/register_employee.html"
     def get(self, request):
-
         form = EmployeeRegistrationForm()
         return render(request, self.template_name, {"form": form})
 

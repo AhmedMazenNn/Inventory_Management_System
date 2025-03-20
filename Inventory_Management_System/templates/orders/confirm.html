@@ -1,12 +1,13 @@
 {% extends "base/base.html" %}
 
 {% block content %}
-  <h2>Are you sure you want to delete "{{ object_name.supermarket_name }}"?</h2>
-  <form method="post" class="w-25">
+<div class="text-center bg-light mt-4 border border-4 rounded-4 w-50 m-auto">
+  <h2 class="fw-bold mt-4">Are you sure you want to delete "{{ ordername }}" Order?</h2>
+  <hr class="w-75 m-auto">
+  <form method="post" class=" my-4 d-flex justify-content-around flex-wrap">
     {% csrf_token %}
-    <div class="d-flex justify-content-around">
-      <button class="btn btn-secondary" type="submit">Confirm Delete</button>
-      <a class="btn btn-danger btn-sm" href="{% url 'orders:order_list' %}">Cancel</a>
-    </div>
+      <button class="btn btn-secondary m-2 fw-bold" type="submit">Confirm Delete</button>
+      <a class="btn btn-danger btn-sm m-2 fw-bold" href="{% url 'orders:order_list' %}">Cancel</a>
   </form>
+</div>
 {% endblock %}
