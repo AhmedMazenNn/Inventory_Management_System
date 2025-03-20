@@ -2,23 +2,79 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1>Create Order</h1>
 
-    <form method="post">
+<div class="container">
+    <a href="{% url 'orders:order_list' %}" class="btn btn btn-outline-secondary fw-bold mt-3 w-25">All_Orders</a>
+    <h1 class="mt-4 text-center">Create Order </h1>
+    <hr>
+    <form method="post" enctype="multipart/form-data" class="{{ form_class_name }}">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label class="form-label fw-bold">{{field.label}}</label>
+            {{field}}
+            {% if field.errors %}
+            <ul class="mt-2">
+                {% for error in field.errors %}
+                <li style="color: red;"> {{error}} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% if form.non_field_errors %}
+        <ul>
+            {% for error in form.non_field_errors %}
+            <li style="color: red;">{{error}}</li>
+            {% endfor %}
+        </ul>  
+        {% endif %}
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="submit" class="btn mt-4 w-25 " style="background-color: thistle;"> Add  </button>
+            <a href="{% url 'orders:order_list' %}" class="btn btn-sm btn-secondary">cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container mt-4 text-center">
+    <h1 class="fw-bold mb-3">Create Order</h1>
+    <hr>
+    <form method="post" form_class="OrderForm">
         {% csrf_token %}
         {{ order_form.as_p }}
-
         <h2 class="mt-4">Add Order Items</h2>
-
         <div class="row g-3 align-items-center mb-3">
             <div class="col-md-6">
                 <label for="product" class="form-label">Product:</label>
-                <select id="product" class="form-select">
+                <select id="product" class="form-control">
                     <option value="" selected disabled>Select a product</option>
                     {% for product in products %}
                         <option value="{{ product.id }}" data-name="{{ product.name }}" data-quantity="{{ product.quantity }}" data-critical-quantity="{{ product.critical_quantity }}">
-                            {{ product.name }} (Available: {{ product.quantity }})
+                            {{ product.name }} (Available: <p class="text-danger fw-bold">{{ product.quantity }}</p> )
                         </option>
                     {% endfor %}
                 </select>
@@ -53,9 +109,9 @@
 
         <button type="submit" class="btn btn-primary">Create Order</button>
     </form>
-</div>
+</div> -->
 
-<script>
+<!-- <script>
     let itemCount = 0;
     const orderItems = [];
 
@@ -113,4 +169,4 @@
         document.getElementById('order-items-input').value = JSON.stringify(orderItems);
     }
 </script>
-{% endblock %}
+-->

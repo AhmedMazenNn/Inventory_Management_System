@@ -1,25 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Product
+from orders.models import Order
+from django.db.models import Count, F
 from .forms import ProductForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 import pandas as pd 
-import plotly
 import plotly.express as px
-import json
 import plotly.offline as pyo
+from accounts.models import User
 
-#in home page
 def search_product(request):
     query = request.GET.get("query")
     products = Product.objects.all()
     if query:
         products = products.filter(name__icontains=query)
     return render(request,"inventory/inventory.html",context={"products":products,"query":query})
-
-
 
 def home_page(request):
     return render(request,"inventory/inventory.html")
@@ -72,52 +70,29 @@ class Dashboard(LoginRequiredMixin,View):
             fig = px.bar(df, y="quantity", x="name", title="Product Quantity", text="quantity")
             fig.update_layout(paper_bgcolor="yellow", plot_bgcolor="yellow")
             image = pyo.plot(fig, output_type="div")
+            return render(request, "accounts/dashboard.html", {"img": image })
         elif query_name == 'shipment':
             pass
         elif query_name == 'order':
-            pass
+            result = Order.objects.values('supermarket_name').annotate(appearance_count=Count('supermarket_name')).order_by('-appearance_count')
+            df = pd.DataFrame(list(result))
+            print(df)
+            fig = px.bar(df, y='appearance_count', x='supermarket_name', title='Supermarket Orders')
+            fig.update_layout(paper_bgcolor="yellow", plot_bgcolor="yellow")
+            image = pyo.plot(fig, output_type="div")
+            return render(request, "accounts/dashboard.html", {"img": image })
         else:
             pass
-        return render(request, "accounts/dashboard.html", {"img": image })
+        return render(request, "accounts/dashboard.html")
 
+def approved_info(request):
+    orders = Order.objects.select_related("approved_by").values(
+        approved_by_name=F("approved_by__username"), superMarket_name=F("supermarket_name")
+    )
+    return render(request, "accounts/dashboard.html", {"orders": orders})
 
-
-#in add_order page
-class Create_order():
-    pass
-#in add_shipment page
-class Create_shipment():
-    pass
-#in add_order page
-class Update_order():
-    pass
-#in add_shipment page
-class Update_shipment():
-    pass
-#in orders page
-class Get_all_orders():
-    pass
-#in shipments page
-class Get_all_shipments():
-    pass
-#in details page
-class Order_detalis():
-    pass
-class Shipment_detalis():
-    pass
-# in sinup page
-class Create_user():
-    pass
-#in manager page
-class Approve_order():
-    pass
-class Approve_shipment():
-    pass
-#in marked_products page
-class Show_marked_products():
-    pass
-
-class Filter():
-    pass
-# Create your views here.
-
+# def go_to_dashboard(request):
+#     if not request.user.groups.filter(role='Manager').exists():
+#         messages.error(request, "You do not have permission to access the dashboard.")
+#         return redirect('home_page')
+#     return render(request,"accounsts/dashboard.html")

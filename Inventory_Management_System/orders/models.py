@@ -8,7 +8,7 @@ class Order(models.Model):
         ('Approved', 'Approved'),
         ('Delivered', 'Delivered'),
     ]
-    supermarket_name = models.CharField(max_length=100)
+    supermarket_name = models.CharField(max_length=100 , unique=True)
     date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='created_orders')
@@ -16,17 +16,19 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order {self.id} for {self.supermarket_name}"
+    
     class Meta():
-        db_table = "order"
+        db_table = 'orders'
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL,null=True, related_name='order_items')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE,null=True, related_name='order_items')
     product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
         return f"{self.quantity} of {self.product.name}"
+    
     class Meta():
-        db_table = "order_item"
+        db_table = 'order_item'
 
 
