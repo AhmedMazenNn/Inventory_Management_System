@@ -5,15 +5,23 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .forms import EmployeeRegistrationForm
 from django.contrib import messages
-#test
+from inventory.models import Product
+from django.shortcuts import render
+import pandas as pd 
+import matplotlib.pyplot as plt
+import io
+import seaborn as sns
+from django.db import connection
+
+
 
 User = get_user_model()
 
-def home(request):
-    return render(request, "accounts/home.html")
+def homee(request):
+    return render(request, "accounts/homee.html")
 class LoginView(AuthLoginView):
     template_name = "accounts/login.html"
-    next_page= "home"
+    next_page= "homee"
 
 class LogoutView(AuthLogoutView):
     next_page = "login"
@@ -25,7 +33,6 @@ class DashboardView(LoginRequiredMixin, View):
 class RegisterEmployeeView(LoginRequiredMixin, View):
     template_name = "accounts/register_employee.html"
     def get(self, request):
-
         form = EmployeeRegistrationForm()
         return render(request, self.template_name, {"form": form})
 
@@ -36,6 +43,7 @@ class RegisterEmployeeView(LoginRequiredMixin, View):
             user.role = "employee"
             user.set_password(form.cleaned_data["password"])
             user.save()
+            print(user.role)
             messages.success(request, f"Employee '{user.username}' registered successfully.")
             return redirect("dashboard")
         return render(request, self.template_name, {"form": form})
@@ -45,3 +53,7 @@ class RegisterEmployeeView(LoginRequiredMixin, View):
             messages.warning(request, "You do not have permission to add employees.")
             return redirect("dashboard")
         return super().dispatch(request, *args, **kwargs)
+    
+
+
+    

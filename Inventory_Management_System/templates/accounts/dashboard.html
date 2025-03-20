@@ -2,42 +2,112 @@
 {% load static %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm p-4 text-center">
-                <h2 class="fw-bold">Welcome, {{ user.username }}</h2>
-                <!-- <h2>{{ user.is_superuser }}</h2> -->
-                {% if user.is_superuser %}
-                <p class="text-muted">super user</p>
-                {% else %}
-                <p class="text-muted">{{ user.get_role_display }}</p>
-                {% endif %}
-                {% if user.role == "manager" or user.is_superuser %}
-                <p class="fw-bold text-primary">You have manager privileges.</p>
-                {% else %}
-                <p class="fw-bold text-success">You have employee privileges.</p>
-                {% endif %}
+<div class="row vh-100">
+    <nav class="col-lg-2 d-md-block bg-light sidebar shadow-sm p-3">
+        <div class="position-sticky">
+            <div class=" text-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2 fw-bold ">Dashboard</h1>
             </div>
-
             <div class="mt-4">
                 <h4 class="fw-bold">Quick Actions</h4>
-                <div class="d-flex flex-wrap gap-3">
-                    <a href="#" class="btn btn-outline-primary">View Orders</a>
-                    <a href="#" class="btn btn-outline-primary">View Shipments</a>
-                    <a href="#" class="btn btn-outline-primary">View Products</a>
-
+                <div class="d-flex flex-column gap-2">
+                    <a href="#" class="btn btn-outline-primary w-100">View Orders</a>
+                    <a href="#" class="btn btn-outline-primary w-100">View Shipments</a>
+                    <form action="{% url 'insights' query_name='product' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary w-100">View Products Insights</button>
+                    </form>
+                    <form action="{% url 'insights' query_name='order' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary w-100">Count Market Orders</button>
+                    </form>
+                    <form action="{% url 'approved_info' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary w-100">Approved Info</button>
+                    </form>
+                    <form action="{% url 'insights' query_name='product' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary w-100">View Products</button>
+                    </form>
                     {% if user.role == "employee" or user.role == "manager" %}
-                    <a href="#" class="btn btn-outline-success">Add Order</a>
+                    <a href="{% url 'orders:create_order' %}" class="btn btn-outline-success w-100">Add Order</a>
                     <a href="#" class="btn btn-outline-success">Add Shipment</a>
                     {% endif %}
-
-
-                    <a href="{% url 'register_employee' %}" class="btn btn-outline-warning">Add Employee</a>
-
+                    <a href="{% url 'register_employee' %}" class="btn btn-outline-warning w-100">Add Employee</a>
                 </div>
             </div>
+        </div>
+    </nav>
+    <div class="col-8 bg-danger">
+        <div class="card shadow-sm p-4 text-center mt-3">
+            <h2 class="fw-bold">{{ user.username }}</h2>
+            {% if user.is_superuser %}
+            <p class="text-muted">Super User</p>
+            {% else %}
+            <p class="text-muted">{{ user.get_role_display }}</p>
+            {% if user.role == 'manager' %}
+                <p class="fw-bold text-primary">You have manager privileges.</p>
+            {% else %}
+                <p class="fw-bold text-success">You have employee privileges.</p>
+            {% endif %}
+            {% endif %}
+        </div>
+        {% if orders %}
+        <div class="mt-4">
+            <h2 class="text-center mb-4">Orders List</h2>
+            <div class="table-responsive">
+                <table class="table table-dark table-striped table-bordered rounded-3">
+                    <thead>
+                        <tr> 
+                            <th>Approved By</th>
+                            <th>Supermarket Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order.approved_by_name }}</td>
+                            <td>{{ order.superMarket_name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+        <div id="chart" class="shadow-sm mt-4">
+            {{ img|safe }}
+        </div>
+    </div>
+    <div class="col-2 bg-danger">
+        <div class="d-flex justify-content-center flex-wrap  align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Some Details</h1>
+        </div>
+        <div class="card p-4 shadow-sm mt-4">
+            <h4 class="fw-bold">Sales Summary</h4>
+            <p class="text-muted">Overview of Latest Month</p>
+            <canvas id="salesChart"></canvas>
+        </div>
+        <div class="card p-4 shadow-sm mt-4">
+            <h4 class="fw-bold">Feeds</h4>
+            <ul class="list-unstyled">
+                <li class="d-flex align-items-center mb-2">
+                    <span class="badge bg-primary rounded-circle p-2 me-2"></span> You have 4 pending tasks.
+                </li>
+                <li class="d-flex align-items-center mb-2">
+                    <span class="badge bg-success rounded-circle p-2 me-2"></span> Server #1 overloaded.
+                </li>
+                <li class="d-flex align-items-center mb-2">
+                    <span class="badge bg-warning rounded-circle p-2 me-2"></span> New order received.
+                </li>
+                <li class="d-flex align-items-center mb-2">
+                    <span class="badge bg-danger rounded-circle p-2 me-2"></span> New user registered.
+                </li>
+            </ul>
         </div>
     </div>
 </div>
 {% endblock content %}
+{% block script %}
+
+{% endblock script %}
