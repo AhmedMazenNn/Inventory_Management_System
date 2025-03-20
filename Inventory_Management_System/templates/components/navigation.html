@@ -4,7 +4,7 @@
 
 <nav class="sticky-top navbar navbar-expand-lg navbar-dark bg-dark shadow py-2">
     <div class="container">
-        <a class="navbar-brand fw-bold text-warning" href="{% url 'home' %}">IMS</a>
+        <a class="navbar-brand fw-bold text-warning" href="{% url 'homee' %}">IMS</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto d-lg-flex flex-lg-row flex-column text-center">
                 <li class="nav-item mb-3 mb-lg-0 me-lg-3">
-                    <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link" href="{% url 'list_all' %}">
+                    <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link" href="{% url 'inventory' %}">
                         Inventory <i class="fa-solid fa-warehouse"></i>
                     </a>
                 </li>
@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li class="nav-item mb-3 mb-lg-0">
-                    <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link" href="#">
+                    <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link" href="{% url 'orders:create_order' %}">
                         Orders <i class="fa-brands fa-first-order-alt"></i>
                     </a>
                 </li>

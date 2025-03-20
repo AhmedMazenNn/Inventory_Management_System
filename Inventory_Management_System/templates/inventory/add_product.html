@@ -11,32 +11,35 @@ form div{
 
 {% block content %}
 <div class="container">
-<h1 class="mt-4 text-center">{{form_name}}</h1>
-<hr>
-<form method="post" enctype="multipart/form-data" class="{{ form_class_name }}">
-    {% csrf_token %}
-    {% for field in form %}
-    <div class="form-group">
-        <label class="form-label">{{field.label}}</label>
-        {{field}}
-        {% if field.errors %}
-        <ul>
-            {% for error in field.errors %}
-            <li style="color: red;"> {{error}} </li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    </div>
-    {% endfor %}
-    {% if form.non_field_errors %}
-    <ul>
-        {% for error in form.non_field_errors %}
-        <li style="color: red;">{{error}}</li>
+    <h1 class="mt-4 text-center">{{form_name}}</h1>
+    <hr>
+    <form method="post" enctype="multipart/form-data" class="{{ form_class_name }}">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label class="form-label">{{field.label}}</label>
+            {{field}}
+            {% if field.errors %}
+            <ul>
+                {% for error in field.errors %}
+                <li style="color: red;"> {{error}} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
         {% endfor %}
-    </ul>  
-    {% endif %}
-    <button type="submit" class="btn mt-4 w-25 " style="background-color: thistle;"> {{btn_name}} </button>
-</form>
+        {% if form.non_field_errors %}
+        <ul>
+            {% for error in form.non_field_errors %}
+            <li style="color: red;">{{error}}</li>
+            {% endfor %}
+        </ul>  
+        {% endif %}
+        <div class="d-flex justify-content-between align-items-center">
+            <button type="submit" class="btn mt-4 w-25 " style="background-color: thistle;"> {{btn_name}} </button>
+            <a href="{% url 'inventory' %}" class="btn btn-sm btn-secondary">cancel</a>
+        </div>
+    </form>
 </div>
 
 {% endblock content %}

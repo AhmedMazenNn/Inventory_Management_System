@@ -8,7 +8,7 @@ class Order(models.Model):
         ('Approved', 'Approved'),
         ('Delivered', 'Delivered'),
     ]
-    supermarket_name = models.CharField(max_length=100)
+    supermarket_name = models.CharField(max_length=100 , unique=True)
     date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='created_orders')

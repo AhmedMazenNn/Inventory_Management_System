@@ -31,7 +31,7 @@
                         <i class="fas fa-box-open fa-3x text-primary mb-3"></i>
                         <h5 class="card-title">Products</h5>
                         <p class="card-text">Manage and track your product inventory.</p>
-                        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">View Products</a>
+                        <a href="{% url 'list_all' %}" class="btn btn-outline-primary">View Products</a>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                         <i class="fas fa-shopping-cart fa-3x text-danger mb-3"></i>
                         <h5 class="card-title">Orders</h5>
                         <p class="card-text">Manage orders placed by supermarkets.</p>
-                        <a href="{% url 'dashboard' %}" class="btn btn-outline-danger">View Orders</a>
+                        <a href="{% url 'orders:order_list' %}" class="btn btn-outline-danger">View Orders</a>
                     </div>
                 </div>
             </div>
