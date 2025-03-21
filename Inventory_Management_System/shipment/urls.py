@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 from .views import *
-=======
-from . import views
->>>>>>> origin/sobhi
 from django.urls import path
 
 
