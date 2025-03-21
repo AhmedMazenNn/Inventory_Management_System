@@ -8,9 +8,7 @@ from django.contrib import messages
 from inventory.models import Product
 from django.shortcuts import render
 import pandas as pd 
-import matplotlib.pyplot as plt
 import io
-import seaborn as sns
 from django.db import connection
 
 

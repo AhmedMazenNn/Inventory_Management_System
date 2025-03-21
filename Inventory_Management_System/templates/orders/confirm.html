@@ -1,12 +1,22 @@
 {% extends "base/base.html" %}
 
 {% block content %}
-  <h2>Are you sure you want to delete "{{ object_name.supermarket_name }}"?</h2>
-  <form method="post" class="w-25">
-    {% csrf_token %}
-    <div class="d-flex justify-content-around">
-      <button class="btn btn-secondary" type="submit">Confirm Delete</button>
-      <a class="btn btn-danger btn-sm" href="{% url 'orders:order_list' %}">Cancel</a>
+<div class="container mt-4">
+    <div class="card shadow-lg p-4 text-center">
+        <h2 class="text-danger"><i class="fas fa-exclamation-triangle"></i> Confirm Deletion</h2>
+        <p class="fs-5">Are you sure you want to delete <strong>"{{ ordername }}"</strong>?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between mt-3">
+                <button class="btn btn-danger fw-bold px-4" type="submit">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
+                <a class="btn btn-outline-secondary fw-bold px-4" href="{% url 'orders:order_list' %}">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
     </div>
-  </form>
+</div>
 {% endblock %}

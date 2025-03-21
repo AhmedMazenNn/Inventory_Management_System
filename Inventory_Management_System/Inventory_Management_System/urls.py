@@ -22,7 +22,6 @@ from accounts.views import homee
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('orders/', include(('orders.urls', 'orders'), namespace='orders')),
     path("invent/", include('inventory.urls')),
     path("shipment/",include('shipment.urls')),
     path("accounts/", include("accounts.urls")),
