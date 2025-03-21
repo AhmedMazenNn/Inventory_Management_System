@@ -13,12 +13,18 @@ import plotly.offline as pyo
 from accounts.models import User
 
 def search_product(request):
-    query = request.GET.get("query")
-    products = Product.objects.all()
-    if query:
-        products = products.filter(name__icontains=query)
-    return render(request,"inventory/inventory.html",context={"products":products,"query":query})
+    query = request.GET.get("query", "").strip()
 
+    if not query:
+        messages.warning(request, "Please enter a product name.")
+        return render(request, "inventory/inventory.html", context={"products": [], "query": ""})
+
+    products = Product.objects.filter(name__icontains=query)
+
+    if not products.exists():
+        messages.error(request, f"No products found for '{query}'.")
+
+    return render(request, "inventory/inventory.html", context={"products": products, "query": query})
 def home_page(request):
     return render(request,"inventory/inventory.html")
 
