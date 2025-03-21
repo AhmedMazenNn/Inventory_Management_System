@@ -16,8 +16,8 @@ class OrderCreateView(CreateView):
     success_url = reverse_lazy('orders:order_list')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form_name"] = "Add Oreder"
-        context["btn_name"] = "Add"
+        context["form_name"] = "Add Order"
+        context["btn_name"] = "Add Order"
         return context
 
     def form_valid(self, form):
