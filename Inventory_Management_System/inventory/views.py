@@ -90,9 +90,3 @@ def approved_info(request):
         approved_by_name=F("approved_by__username"), superMarket_name=F("supermarket_name")
     )
     return render(request, "accounts/dashboard.html", {"orders": orders})
-
-# def go_to_dashboard(request):
-#     if not request.user.groups.filter(role='Manager').exists():
-#         messages.error(request, "You do not have permission to access the dashboard.")
-#         return redirect('home_page')
-#     return render(request,"accounsts/dashboard.html")

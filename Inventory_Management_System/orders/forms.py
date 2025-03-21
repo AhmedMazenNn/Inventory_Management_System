@@ -16,7 +16,7 @@ class OrderForm(forms.ModelForm):
         supermarket_name = cleaned_data.get('supermarket_name')
         if not supermarket_name:
             self.add_error('supermarket_name', 'This field is required.')
-        if not re.match(r'^[A-Za-z\s]+$', supermarket_name):
+        if not re.match(r'^[A-Za-z_\s]+$', supermarket_name):
             self.add_error("supermarket_name", "Supermarket name must contain only letters and spaces.")
 
         return cleaned_data

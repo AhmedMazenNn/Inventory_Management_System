@@ -4,28 +4,8 @@
 
 
 {% block content %}
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show w-50" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-    {% endif %}
 
-<div class="row p-3">
-    <div class="col-2 bg-danger d-flex flex-column gap-2 vh-100 rounded-5" id="sidebar">
-        <h4 class="text-center mt-3">Menu</h4>
-        <hr>
-        <a href="{% url 'list_all' %}" class="btn btn-secondary">📊 list_all</a>
-        <a href="{% url 'add_product' %}" class="btn btn-secondary">⚙️ add_product</a>
-        <form action="{% url 'insights' query_name='product' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-secondary">Products_quantity</button>
-        </form>
-    </div>
-
-    <div class="container mt-5 col-10">
+    <div class="container mt-5">
         <div class="container mb-4">
             <form class="d-flex gap-4 justify-content-center" method="GET" action="{% url 'search' %}" >
                 <input type="search" name="query" class="form-control w-50" placeholder="search by name">
@@ -123,9 +103,7 @@
             </table>
         </div>
     </div>
-    
     {% endif %}
-</div>
 
 {% endblock content %}
 

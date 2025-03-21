@@ -5,9 +5,9 @@ from .models import Order, OrderItem
 from .forms import OrderForm, OrderItemForm
 from accounts.models import User
 from inventory.models import Product
-import json
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView
 from django.urls import reverse_lazy
+from django.contrib import messages as message
 
 class OrderCreateView(CreateView):
     model = Order
@@ -22,7 +22,9 @@ class OrderCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
+        message.success(self.request, "Order created successfully.")
         return super().form_valid(form)
+    
 
 class OrderUpdateView(UpdateView):      #update for status now    
     model = Order
