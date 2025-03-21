@@ -26,6 +26,8 @@ class List_all_products(LoginRequiredMixin,ListView):
     model = Product
     template_name = 'inventory/inventory.html'
     context_object_name = 'products'
+    login_url = 'login'
+    redirect_field_name = 'next'
 
 
 class Update_product(LoginRequiredMixin,UpdateView):
