@@ -3,38 +3,53 @@
 
 {% block content %}
 
-<div class="container">
-    <a href="{% url 'orders:order_list' %}" class="btn btn btn-outline-secondary fw-bold mt-3 w-25">All_Orders</a>
-    <h1 class="mt-4 text-center">{{form_name}}</h1>
-    <hr>
-    <form method="post" enctype="multipart/form-data" class="{{ form_class_name }}">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="form-group">
-            <label class="form-label fw-bold">{{field.label}}</label>
-            {{field}}
-            {% if field.errors %}
-            <ul class="mt-2">
-                {% for error in field.errors %}
-                <li style="color: red;"> {{error}} </li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
-        {% endfor %}
-        {% if form.non_field_errors %}
-        <ul>
-            {% for error in form.non_field_errors %}
-            <li style="color: red;">{{error}}</li>
-            {% endfor %}
-        </ul>  
-        {% endif %}
-        <div class="d-flex justify-content-between align-items-center">
-            <button type="submit" class="btn mt-4 w-25 " style="background-color: thistle;"> {{btn_name}}  </button>
-            <a href="{% url 'orders:order_list' %}" class="btn btn-sm btn-secondary">cancel</a>
-        </div>
-    </form>
+<button class="btn btn-dark m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+    <i class="fa-solid fa-bars"></i> Menu
+</button>
+
+<!-- Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start bg-dark text-light vh-100" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header border-bottom border-secondary">
+        <h4 class="offcanvas-title" id="sidebarLabel">Menu</h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <div class="offcanvas-body d-flex flex-column gap-3">
+        <a href="{% url 'orders:order_list' %}" class="btn btn-outline-light d-flex align-items-center gap-2">
+            📋 All Orders
+        </a>
+    </div>
 </div>
+<h1 class="mt-4 text-center">{{form_name}}</h1>
+<hr>
+<form method="post" enctype="multipart/form-data" class="{{ form_class_name }}">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+        <label class="form-label fw-bold">{{field.label}}</label>
+        {{field}}
+        {% if field.errors %}
+        <ul class="mt-2">
+            {% for error in field.errors %}
+            <li style="color: red;"> {{error}} </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% if form.non_field_errors %}
+    <ul>
+        {% for error in form.non_field_errors %}
+        <li style="color: red;">{{error}}</li>
+        {% endfor %}
+    </ul>  
+    {% endif %}
+    <div class="d-flex justify-content-between align-items-center">
+        <button type="submit" class="btn btn-success"><i class="fa-solid fa-plus"></i> {{btn_name}}</button>
+    </div>
+</form>
+</div>
+
 
 {% endblock content %}
 

@@ -7,10 +7,10 @@
 {% block content %}
 
 <div class="container mt-4">
-    <h2 class="text-center text-danger">Shipments List</h2>
+    <h2 class="text-center my-4">Shipments</h2>
     <!--button to create a new shipment-->
-    <a class="btn btn-success" href="{% url 'shipment:create_shipment' %}">
-        <i class="bi bi-plus-lg"></i> Add Shipment
+    <a class="btn btn-success mb-4" href="{% url 'shipment:create_shipment' %}">
+        <i class="fa-solid fa-plus"></i> Add Shipment
     </a>
     <!--shipments table-->
     <div class="table-responsive">
