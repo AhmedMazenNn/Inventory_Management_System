@@ -5,12 +5,11 @@ import re
 
 User = get_user_model()
 
-
 class EmployeeRegistrationForm(forms.ModelForm):
     password = forms.CharField(
         widget=forms.PasswordInput,
         min_length=8,
-        help_text="Password must be at least 8 characters long and contain both letters and numbers.",
+        help_text="Password must be at least 8 characters long, contain both letters and numbers, and have no spaces.",
     )
     confirm_password = forms.CharField(
         widget=forms.PasswordInput,
@@ -23,20 +22,26 @@ class EmployeeRegistrationForm(forms.ModelForm):
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
+        if not re.match(r"^[A-Za-z]{4,20}$", username):
+            raise ValidationError("Username must contain only letters and be 4-20 characters long.")
         if User.objects.filter(username=username).exists():
             raise ValidationError("This username is already taken.")
         return username
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
+        if not re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", email):
+            raise ValidationError("Enter a valid email address.")
         if User.objects.filter(email=email).exists():
             raise ValidationError("This email is already registered.")
         return email
 
     def clean_password(self):
         password = self.cleaned_data.get("password")
-        if not re.search(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", password):
-            raise ValidationError("Password must contain at least one letter and one number.")
+        if not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", password):
+            raise ValidationError("Password must contain at least one letter, one number, and have no spaces.")
+        if " " in password:
+            raise ValidationError("Password cannot contain spaces.")
         return password
 
     def clean(self):
