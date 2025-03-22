@@ -35,14 +35,13 @@
     {% include "components/navigation.html" %}
     {% if messages %}
     {% for message in messages %}
-    <div class="mt-4 alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+    <div class="my-1 alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endfor %}
     {% endif %}
     <main class="main p-3">
-        <!-- {% include "components/sidebar.html" %} -->
         {% block content %}
         
         {% endblock content %}

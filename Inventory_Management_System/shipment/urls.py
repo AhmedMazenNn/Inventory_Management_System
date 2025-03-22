@@ -2,10 +2,29 @@ from .views import *
 from django.urls import path
 
 
+app_name = 'shipments'
+
 urlpatterns = [
-    path('shipment/',list_shipment, name='shipment_list'),
-    path('shipment/<int:pk>',shipment_detail, name='shipment_detail'),
-    path('shipment/create',create_shipment, name='create_shipment'),
-    path('shipment/update/<int:pk>',update_shipment, name='update_shipment'),
+    path('shipment/', ShipmentListView.as_view(), name='shipment_list'),
+    path('shipment/<int:pk>/', ShipmentDetailView.as_view(), name='shipment_detail'),
+    path('shipment/create/', ShipmentCreateView.as_view(), name='create_shipment'),
+    path('shipment/update/<int:pk>/', ShipmentUpdateView.as_view(), name='update_shipment'),
+    path('shipment/delete/<int:pk>/', ShipmentDeleteView.as_view(), name='delete_shipment'),
+    path('shipment/approve/<int:pk>/', ShipmentApproveView.as_view(), name='approve_shipment'),
+    path("add-item/<int:shipment_id>/", ShipmentItemCreateView.as_view(), name="add_shipment_item"),
 ]
-app_name = 'shipment'
+
+
+
+
+
+
+# urlpatterns = [
+#     path('shipment/',list_shipment, name='shipment_list'),
+#     path('shipment/<int:pk>',shipment_detail, name='shipment_detail'),
+#     path('shipment/create',create_shipment, name='create_shipment'),
+#     path('shipment/update/<int:pk>',update_shipment, name='update_shipment'),
+# ]
+# app_name = 'shipment'
+
+

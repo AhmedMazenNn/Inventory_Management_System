@@ -1,32 +1,30 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Product
 from orders.models import Order
+from shipment.models import Shipment
 from django.db.models import Count, F
 from .forms import ProductForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 import pandas as pd 
+from itertools import chain
 import plotly.express as px
 import plotly.offline as pyo
-from accounts.models import User
+
+def home_page(request):
+    return render(request,"inventory/inventory.html")
 
 def search_product(request):
     query = request.GET.get("query", "").strip()
-
     if not query:
         messages.warning(request, "Please enter a product name.")
         return render(request, "inventory/inventory.html", context={"products": [], "query": ""})
-
     products = Product.objects.filter(name__icontains=query)
-
     if not products.exists():
         messages.error(request, f"No products found for '{query}'.")
-
     return render(request, "inventory/inventory.html", context={"products": products, "query": query})
-def home_page(request):
-    return render(request,"inventory/inventory.html")
 
 class List_all_products(LoginRequiredMixin,ListView):
     model = Product
@@ -34,7 +32,6 @@ class List_all_products(LoginRequiredMixin,ListView):
     context_object_name = 'products'
     login_url = 'login'
     redirect_field_name = 'next'
-
 
 class Update_product(LoginRequiredMixin,UpdateView):
     model = Product
@@ -71,30 +68,49 @@ class create_product(LoginRequiredMixin,CreateView):
 class Dashboard(LoginRequiredMixin,View):
     def get(self, request):
         return render(request, "accounts/dashboard.html")
-    def post(self, request, query_name):
+    def post(self, request,query_name):
+        shipment_count = Shipment.objects.count()
+        order_count = Order.objects.count()
+        product_count = Product.objects.count()
+        print(product_count)
+        context = {
+            'shipment_count': shipment_count,
+            'order_count': order_count,
+            'product_count': product_count,
+        }
         if query_name == 'product':
             products = Product.objects.values("name", "quantity")
             df = pd.DataFrame(list(products))
             fig = px.bar(df, y="quantity", x="name", title="Product Quantity", text="quantity")
             fig.update_layout(paper_bgcolor="yellow", plot_bgcolor="yellow")
-            image = pyo.plot(fig, output_type="div")
-            return render(request, "accounts/dashboard.html", {"img": image })
+            context["img"] = pyo.plot(fig, output_type="div")
         elif query_name == 'shipment':
-            pass
-        elif query_name == 'order':
-            result = Order.objects.values('supermarket_name').annotate(appearance_count=Count('supermarket_name')).order_by('-appearance_count')
-            df = pd.DataFrame(list(result))
-            print(df)
-            fig = px.bar(df, y='appearance_count', x='supermarket_name', title='Supermarket Orders')
+            shipments = Shipment.objects.annotate(num_products=Count('shipment_items__product', distinct=True)).values('factory_name', 'num_products')
+            df = pd.DataFrame(list(shipments))
+            if not df.empty: 
+                fig = px.bar(df, x="factory_name", y="num_products", title="Number of Products in Each Shipment", text="num_products",labels={'factory_name': 'Factory Name', 'num_products': 'Number of Products'})
             fig.update_layout(paper_bgcolor="yellow", plot_bgcolor="yellow")
-            image = pyo.plot(fig, output_type="div")
-            return render(request, "accounts/dashboard.html", {"img": image })
-        else:
-            pass
-        return render(request, "accounts/dashboard.html")
+            context["img"] = pyo.plot(fig, output_type="div")
+        elif query_name == 'order':
+            orders = Order.objects.annotate(num_products=Count('order_items__product', distinct=True)).values('supermarket_name', 'num_products')
+            df = pd.DataFrame(list(orders))
+            if not df.empty:
+                fig = px.bar(df, x="supermarket_name", y="num_products", title="Number of Products in Each Order", text="num_products", labels={'supermarket_name': 'Supermarket Name', 'num_products': 'Number of Products'})
+                fig.update_traces(marker_color='red')
+                fig.update_layout(paper_bgcolor="yellow", plot_bgcolor="yellow")
+                context["img"] = pyo.plot(fig, output_type="div")
+        return render(request, "accounts/dashboard.html", context)
 
 def approved_info(request):
     orders = Order.objects.select_related("approved_by").values(
-        approved_by_name=F("approved_by__username"), superMarket_name=F("supermarket_name")
+        approved_by_name=F("approved_by__username"),
+        name=F("supermarket_name"), 
+        type=F("status")
     )
-    return render(request, "accounts/dashboard.html", {"orders": orders})
+    shipments = Shipment.objects.select_related("approved_by").values(
+        approved_by_name=F("approved_by__username"),
+        name=F("factory_name"),
+        type=F("status") 
+    )
+    combined_records = list(chain(orders, shipments))
+    return render(request, "accounts/dashboard.html", {"records": combined_records})
