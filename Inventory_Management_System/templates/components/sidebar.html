@@ -5,18 +5,21 @@
 
 <div id="sidebar" class="sidebar">
     <button class="toggle-btn m-3" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
+        <i class="fas fa-bars fs-2"></i>
     </button>
-    <a href="#"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a>
-    <a href="{% url 'list_all' %}"><i class="fas fa-box"></i> <span class="btn btn-outline-secondary fw-bold">Products</span></a>
-    <a href="{% url 'add_product' %}"><i class="fas fa-layer-group"></i> <span class="btn btn-outline-secondary fw-bold">Add_Product</span></a>
-    <a href="#"><i class="fas fa-shopping-cart"></i> <span class="btn btn-outline-secondary fw-bold">Sale</span></a>
-    <a href="#"><i class="fas fa-receipt"></i> <span class="btn btn-outline-secondary fw-bold">Purchases</span></a>
-    <a href="#"><i class="fas fa-undo"></i> <span class="btn btn-outline-secondary fw-bold">Returns</span></a>
-    <a href="#"><i class="fas fa-user"></i> <span class="btn btn-outline-secondary fw-bold">People</span></a>
-    <a href="#"><i class="fas fa-file-alt"></i> <span class="btn btn-outline-secondary fw-bold">Reports</span></a>
+    <a href="#"><i class="fas fa-chart-line fs-2"></i> <span class="btn btn-outline-secondary fw-bold">Dashboard</span></a>
+    <a href="{% url 'list_all' %}"><i class="fas fa-box fs-2"></i> <span class="btn btn-outline-secondary fw-bold">Products</span></a>
+    <a href="{% url 'add_product' %}"><i class="fas fa-layer-group fs-2"></i> <span class="btn btn-outline-secondary fw-bold">Add_Product</span></a>
+    <form action="{% url 'insights' query_name='product' %}" method="post">
+        {% csrf_token %}
+        <button type="submit"><i class="fas fa-shopping-cart fs-2"></i> <span class="btn btn-outline-secondary fw-bold">View Products Insights</span></button>
+    </form>
+    <a href="#"><i class="fas fa-receipt fs-2"></i> <span class="btn btn-outline-secondary fw-bold">Purchases</span></a>
+    <a href="#"><i class="fas fa-undo fs-2"></i> <span class="btn btn-outline-secondary fw-bold">Returns</span></a>
+    <a href="#"><i class="fas fa-user fs-2"></i> <span class="btn btn-outline-secondary fw-bold">People</span></a>
+    <a href="#"><i class="fas fa-file-alt fs-2"></i> <span class="btn btn-outline-secondary fw-bold">Reports</span></a>
 </div>
-
+ 
 <script>
     function toggleSidebar() {
         document.getElementById("sidebar").classList.toggle("collapsed");

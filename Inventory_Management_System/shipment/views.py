@@ -18,7 +18,7 @@ def list_shipment(request):
 def shipment_detail(request, pk):
     shipment = get_object_or_404(Shipment, pk=pk)
     shipment_items = ShipmentItem.objects.filter(shipment=shipment)
-    return render(request, 'shipment/shipment_detail.html', {
+    return render(request, 'shipment/shipment_details.html', {
         'shipment': shipment,
         'shipment_items': shipment_items
     })

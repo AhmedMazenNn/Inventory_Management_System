@@ -23,6 +23,6 @@ class ProductForm(forms.ModelForm):
             self.add_error('quantity', "Quantity must be greater than critical_quantity.")
 
         if critical_quantity is None or critical_quantity < 10:
-            self.add_error('critical_quantity', "Critical quantity must be at least 5.")
+            self.add_error('critical_quantity', "Critical quantity must be at least 10.")
         return cleaned_data
     

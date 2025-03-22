@@ -2,62 +2,92 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1 class="mb-4">Order Details</h1>
+    <h1 class="text-center text-primary mb-4">Order Details</h1>
 
-    <table class="table table-bordered">
-        <tbody>
-            <tr>
-                <th scope="row">Order ID</th>
-                <td>{{ order.id }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Supermarket</th>
-                <td>{{ order.supermarket_name }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Status</th>
-                <td>{{ order.status }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Created by</th>
-                <td>{{ order.created_by }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row" class="bg-light">Order ID</th>
+                        <td>{{ order.id }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="bg-light">Supermarket</th>
+                        <td>{{ order.supermarket_name }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="bg-light">Status</th>
+                        <td>
+                            <span class="badge 
+                                {% if order.status == 'Pending' %}bg-warning text-dark
+                                {% elif order.status == 'Approved' %}bg-success
+                                {% else %}bg-secondary{% endif %}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="bg-light">Created by</th>
+                        <td>{{ order.created_by.username }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <h2 class="mt-5 text-center text-secondary">Order Items</h2>
+    <hr class="mb-3"/>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover text-center shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order_items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>
+                        <a href="{% url 'orders:update_order_item' item.id %}" class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i> Update
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-danger">No items in this order.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <h2 class="mt-4">Order Items</h2>
-    <table class="table table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>#</th>
-                <th>Product Name</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in order_items %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.quantity }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3" class="text-center">No items in this order.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <div class="mt-4 d-flex justify-content-around">
+    <div class="d-flex justify-content-between mt-4">
+        <a href="{% url 'orders:order_list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Orders List
+        </a>
+    
         {% if request.user.role != 'employee' or order.status != 'Approved' %}
-        <a href="{% url 'orders:add_order_item' order.id %}" class="btn btn-primary">Add Item</a>
+        <a href="{% url 'orders:add_order_item' order.id %}" class="btn btn-primary {% if order.status == 'Approved' %} disabled {% endif %} ">
+            <i class="fas fa-plus"></i> Add Item
+        </a>
         {% endif %}
-
+    
         {% if request.user.role == 'manager' and order.status == 'Pending' %}
-        <a href="{% url 'orders:approve_order' order.id %}" class="btn btn-success">Approve Order</a>
+        <form action="{% url 'orders:approve_order' order.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-check"></i> Approve Order
+            </button>
+        </form>
         {% endif %}
-        <a class="btn btn-info btn-small" href="{% url 'orders:order_list' %}">Back to list </a>
     </div>
     
 </div>

@@ -32,13 +32,23 @@ class OrderItemForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        self.order = kwargs.pop('order', None)
         super().__init__(*args, **kwargs)
         self.fields['product'].queryset = Product.objects.filter(quantity__gt=0)
-        self.fields['product'].choices = [(product.id, product.name) for product in self.fields['product'].queryset]
 
     def clean(self):
         cleaned_data = super().clean()
         quantity = cleaned_data.get("quantity")
+        product = cleaned_data.get("product")
+        if product and self.order:
+            exists = OrderItem.objects.filter(order=self.order, product=product).exists()
+            if exists:
+                self.add_error("product", "This product is already added to the order.")
+        elif not product:
+            self.add_error("product", "Please select a product.")
         if quantity is not None and quantity < 1:
             self.add_error("quantity", "Quantity must be at least 1")
+        remaning_quantity = product.quantity - quantity
+        if remaning_quantity < product.critical_quantity :
+            self.add_error("quantity",f"Cannot order this quantity. It would drop below the critical quantity ({product.critical_quantity}).")
         return cleaned_data
