@@ -4,7 +4,10 @@
 
 <nav class="sticky-top navbar navbar-expand-lg navbar-dark bg-dark shadow py-2">
     <div class="container">
-        <a class="navbar-brand fw-bold text-warning" href="{% url 'home' %}">IMS</a>
+        <a class="navbar-brand fw-bold text-warning" href="{% url 'home' %}">
+            <img src="{% static 'images/ims2.png' %}" style="height: 40px; width: auto;" alt="">
+
+        </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -65,3 +68,5 @@
         </div>
     </div>
 </nav>
+
+<script src="{% static 'js/navigation.js' %}"></script>

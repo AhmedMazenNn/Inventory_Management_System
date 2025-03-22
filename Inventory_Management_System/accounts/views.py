@@ -5,10 +5,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .forms import EmployeeRegistrationForm
 from django.contrib import messages
-from inventory.models import Product
 from django.shortcuts import render
-import pandas as pd 
-import io
 from django.db import connection
 
 

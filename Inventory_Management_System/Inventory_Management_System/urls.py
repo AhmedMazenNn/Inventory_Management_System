@@ -24,5 +24,8 @@ urlpatterns = [
     path("invent/", include('inventory.urls')),
     path("shipment/",include('shipment.urls')),
     path("", include("accounts.urls")),
+<<<<<<< HEAD
     path('orders/', include('orders.urls')),
+=======
+>>>>>>> origin/Mazen
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
