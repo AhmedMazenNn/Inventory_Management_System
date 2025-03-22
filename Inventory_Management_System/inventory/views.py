@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from .models import Product
 from orders.models import Order
 from django.db.models import Count, F
@@ -12,6 +13,7 @@ import plotly.express as px
 import plotly.offline as pyo
 from accounts.models import User
 
+@login_required(login_url='login')
 def search_product(request):
     query = request.GET.get("query", "").strip()
 
@@ -25,6 +27,7 @@ def search_product(request):
         messages.error(request, f"No products found for '{query}'.")
 
     return render(request, "inventory/inventory.html", context={"products": products, "query": query})
+@login_required(login_url='login')
 def home_page(request):
     return render(request,"inventory/inventory.html")
 
@@ -93,6 +96,7 @@ class Dashboard(LoginRequiredMixin,View):
             pass
         return render(request, "accounts/dashboard.html")
 
+@login_required(login_url='login')
 def approved_info(request):
     orders = Order.objects.select_related("approved_by").values(
         approved_by_name=F("approved_by__username"), superMarket_name=F("supermarket_name")

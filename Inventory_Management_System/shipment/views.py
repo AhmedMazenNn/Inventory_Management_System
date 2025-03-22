@@ -1,20 +1,20 @@
-from django.http import HttpResponseForbidden
-from django.shortcuts import get_object_or_404, render
-from .models import Shipment, ShipmentItem
-from .forms import ShipmentForm,ShipmentItemFormSet
-from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from .models import Shipment, ShipmentItem
+from .forms import ShipmentForm, ShipmentItemFormSet
 
+# ----- FUNCTION-BASED VIEWS -----
 
-@login_required
+@login_required(login_url='login')
 def list_shipment(request):
     shipments = Shipment.objects.all()
     return render(request, 'shipment/list_of_shipment.html', {
         'shipments': shipments
     })
 
-@login_required
+@login_required(login_url='login')
 def shipment_detail(request, pk):
     shipment = get_object_or_404(Shipment, pk=pk)
     shipment_items = ShipmentItem.objects.filter(shipment=shipment)
@@ -23,7 +23,7 @@ def shipment_detail(request, pk):
         'shipment_items': shipment_items
     })
 
-@login_required
+@login_required(login_url='login')
 def create_shipment(request):
     if request.method == 'POST':
         shipment_form = ShipmentForm(request.POST)
@@ -51,8 +51,7 @@ def create_shipment(request):
         'formset': formset
     })
 
-
-@login_required
+@login_required(login_url='login')
 def update_shipment(request, pk):
     if request.user.role != "manager":
         messages.warning(request, "You don't have permission to update.")
@@ -78,7 +77,7 @@ def update_shipment(request, pk):
             shipment_form = ShipmentForm(instance=shipment)
             formset = ShipmentItemFormSet(instance=shipment)
     else:
-        messages.warning(request, "You can't update a deliverd shipment.")
+        messages.warning(request, "You can't update a delivered shipment.")
         return redirect("shipment:shipment_list")
     return render(request, 'shipment/update_shipment.html', {
         'shipment_form': shipment_form,
