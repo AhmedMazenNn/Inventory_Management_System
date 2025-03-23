@@ -1,3 +1,4 @@
+
 from django.db import models
 from accounts.models import User
 from inventory.models import Product
@@ -28,4 +29,5 @@ class ShipmentItem(models.Model):
         return f"{self.quantity} of {self.product.name}"
     class Meta():
         db_table = "shipment_item"
+
 

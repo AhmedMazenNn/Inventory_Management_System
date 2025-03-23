@@ -1,134 +1,67 @@
-{% extends 'base/base.html' %}
-{% block style %}
-{% endblock style %}
-
+{% extends "base/base.html" %}
 
 {% block content %}
-<h2 class="text-center my-4">Inventory</h2>
-    <button class="btn btn-dark m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
-        <i class="fa-solid fa-bars"></i> Menu
-    </button>
-    
-    <!-- Offcanvas Sidebar -->
-    <div class="offcanvas offcanvas-start bg-dark text-light vh-100" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
-        <div class="offcanvas-header border-bottom border-secondary">
-            <h4 class="offcanvas-title" id="sidebarLabel">Menu</h4>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-    
-        <div class="offcanvas-body d-flex flex-column gap-3">
-            <a href="{% url 'list_all' %}" class="btn btn-outline-light d-flex align-items-center gap-2">
-                <i class="fa-solid fa-signal"></i> List All
-            </a>
-            <a href="{% url 'add_product' %}" class="btn btn-outline-light d-flex align-items-center gap-2">
-                <i class="fa-solid fa-plus"></i> Add Product
-            </a>
-        </div>
+<div class="container mt-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <a href="{% url 'add_product' %}" class="btn btn-primary fw-bold">
+            <i class="fas fa-plus-circle"></i> Add New Product
+        </a>
+
+        <form class="d-flex gap-2" method="GET" action="{% url 'search' %}">
+            {% csrf_token %}
+            <input type="search" name="query" class="form-control" placeholder="Search by name">
+            <button class="btn btn-success">Search</button>
+        </form>
     </div>
-    <div class="container mt-5 col-10">
-        <div class="container mb-4">
-            <form class="d-flex gap-4 justify-content-center" method="GET" action="{% url 'search' %}" >
-                {% csrf_token %}
-                <input type="search" name="query" class="form-control w-50" placeholder="search by name">
-                <button class="btn btn-success">Search</button>
-            </form>
-        </div>
-        <h2 class="text-center mb-4">Product List</h2>
-        <hr>
-        {% if query != "" and products %}
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead class="table-primary">
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Quantity</th>
-                        <th>Critical Quantity</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in products %}
-                    <tr>
-                        <td>{{ product.id }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.description }}</td>
-                        <td>{{ product.quantity }}</td>
-                        <td>{{ product.critical_quantity }}</td>
-                        <td>
-                            {% if product.is_critical %}
-                                <span class="badge bg-danger">Critical</span>
-                            {% else %}
-                                <span class="badge bg-success">Safe</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="{% url 'update_product' product.id %}" class="btn btn-warning btn-sm">
+
+    <h2 class="text-center my-4 text-primary">Products List</h2>
+    <hr>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover text-center align-middle">
+            <thead class="table-dark text-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Critical Quantity</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td class="fw-bold">{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.quantity }}</td>
+                    <td>{{ product.critical_quantity }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if product.is_critical %} bg-danger 
+                            {% else %} bg-success {% endif %}">
+                            {% if product.is_critical %} Critical {% else %} Safe {% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'update_product' product.id %}" class="btn btn-sm btn-outline-primary">
                                 <i class="fas fa-edit"></i> Update
                             </a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="7" class="text-center">No products available</td>
-                    </tr>
-                    {% endfor %}
-                    
-                </tbody>
-            </table>
-        </div>
-        {% elif products %}
-        <div class="table-responsive">
-            <table class="table table-dark table-striped table-hover text-center">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Quantity</th>
-                        <th>Critical Quantity</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in products %}
-                    <tr>
-                        <td>{{ product.id }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.description }}</td>
-                        <td>{{ product.quantity }}</td>
-                        <td>{{ product.critical_quantity }}</td>
-                        <td>
-                            {% if product.is_critical %}
-                                <span class="badge bg-danger">Critical</span>
-                            {% else %}
-                                <span class="badge bg-success">Safe</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="{% url 'update_product' product.id %}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Update
-                            </a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="7" class="text-center">No products available</td>
-                    </tr>
-                    {% endfor %}
-                    
-                </tbody>
-            </table>
-        </div>
+                            
+                            
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted">No products available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    
-    {% endif %}
 </div>
-
 {% endblock content %}
-
-{% block script %}
-{% endblock script %}

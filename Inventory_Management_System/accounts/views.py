@@ -8,15 +8,12 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.db import connection
 
-
-
 User = get_user_model()
-
-def homee(request):
-    return render(request, "accounts/homee.html")
+def home(request):
+    return render(request, "accounts/home.html")
 class LoginView(AuthLoginView):
     template_name = "accounts/login.html"
-    next_page= "homee"
+    next_page= "home"
 
 class LogoutView(AuthLogoutView):
     next_page = "login"

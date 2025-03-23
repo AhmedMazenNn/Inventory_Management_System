@@ -5,12 +5,12 @@
 
 <div class="container mt-5">
     <div class="text-center">
-        <a href="{% url 'orders:order_list' %}" class="btn btn-outline-secondary fw-bold">
-            <i class="fas fa-list"></i> All Orders
+        <a href="{% url 'shipments:shipment_list' %}" class="btn btn-outline-secondary fw-bold">
+            <i class="fas fa-list"></i> All Shipments
         </a>
     </div>
 
-    <h1 class="mt-4 text-center text-primary">{{form_name}}</h1>
+    <h1 class="mt-4 text-center text-primary">{{ form_name }}</h1>
     <hr class="w-50 mx-auto">
 
     <div class="col-md-8 mx-auto">
@@ -23,6 +23,7 @@
                 {{ field|as_crispy_field }}
             </div>
             {% endfor %}
+
             {% if form.non_field_errors %}
             <div class="alert alert-danger mt-3">
                 {% for error in form.non_field_errors %}
@@ -33,13 +34,12 @@
 
             <div class="d-flex justify-content-between align-items-center mt-4">
                 <button type="submit" class="btn btn-primary fw-bold w-25 btn-sm">
-                    <i class="fas fa-plus-circle"></i> {{btn_name}}
+                    <i class="fas fa-plus-circle"></i> {{ btn_name }}
                 </button>
-                <a href="{% url 'orders:order_list' %}" class="btn btn-outline-danger btn-sm">
+                <a href="{% url 'shipments:shipment_list' %}" class="btn btn-outline-danger btn-sm">
                     <i class="fas fa-times"></i> Cancel
                 </a>
             </div>
-            
         </form>
     </div>
 </div>

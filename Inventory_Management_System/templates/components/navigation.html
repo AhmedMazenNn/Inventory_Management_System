@@ -4,7 +4,7 @@
 
 <nav class="sticky-top navbar navbar-expand-lg navbar-dark bg-dark shadow py-2">
     <div class="container">
-        <a class="navbar-brand fw-bold text-warning" href="{% url 'homee' %}">
+        <a class="navbar-brand fw-bold text-warning" href="{% url 'home' %}">
             <img src="{% static 'images/ims2.png' %}" style="height: 40px; width: auto;" alt="">
 
         </a>
@@ -16,13 +16,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto d-lg-flex flex-lg-row flex-column text-center">
                 <li class="nav-item mb-3 mb-lg-0 me-lg-3">
-                    <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link" href="{% url 'inventory' %}">
+                    <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link" href="{% url 'list_all' %}">
                         Inventory <i class="fa-solid fa-warehouse"></i>
                     </a>
                 </li>
                 <li class="nav-item mb-3 mb-lg-0 me-lg-3">
                     <a class="btn btn-outline-warning fw-bold w-100 w-lg-auto nav-link"
-                        href="{% url 'shipment:shipment_list' %}">
+                        href="{% url 'shipments:shipment_list' %}">
                         Shipments <i class="fa-solid fa-truck"></i>
                     </a>
                 </li>
@@ -36,9 +36,12 @@
             <ul class="navbar-nav ms-auto align-items-center text-center">
                 {% if user.is_authenticated %}
                 <li class="nav-item mb-3 mb-lg-0 me-lg-3">
-                    <a class="btn btn-outline-info w-100 w-lg-auto" href="{% url 'dashboard' %}">
-                        <i class="fa-solid fa-user"></i> Welcome, {{ user.username }}
-                    </a>
+                    <form action="{% url 'insights' query_name='product' %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-info w-100 w-lg-auto" type="submit">
+                            <i class="fa-solid fa-user"></i> {{ user.username }}
+                        </button>
+                    </form>
                 </li>
                 <li class="nav-item mb-3 mb-lg-0">
                     <form method="post" action="{% url 'logout' %}">

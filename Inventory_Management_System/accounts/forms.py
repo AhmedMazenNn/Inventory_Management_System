@@ -15,7 +15,6 @@ class EmployeeRegistrationForm(forms.ModelForm):
         widget=forms.PasswordInput,
         label="Confirm Password"
     )
-
     class Meta:
         model = User
         fields = ["username", "email", "password", "confirm_password"]
@@ -39,17 +38,13 @@ class EmployeeRegistrationForm(forms.ModelForm):
     def clean_password(self):
         password = self.cleaned_data.get("password")
         if not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", password):
-            raise ValidationError("Password must contain at least one letter, one number, and have no spaces.")
-        if " " in password:
-            raise ValidationError("Password cannot contain spaces.")
+            raise ValidationError("Password must contain at least one letter, one number, and be at least 8 characters long.")
         return password
 
-    def clean(self):
+    def clean_confirm_password(self): 
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         confirm_password = cleaned_data.get("confirm_password")
-
         if password and confirm_password and password != confirm_password:
             raise ValidationError("Passwords do not match.")
-        
-        return cleaned_data
+        return confirm_password 
