@@ -1,8 +1,18 @@
 {% extends "base/base.html" %}
+{% load static %}
+
 {% load crispy_forms_tags %}
 
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}"/>
+
+{% endblock header %}
+
 {% block content %}
-    <div class="content-section container">
+
+
+    <div class="content-section container login-container">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
