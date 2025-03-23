@@ -47,9 +47,9 @@
                             <a href="{% url 'orders:order_detail' order.id %}" class="btn btn-sm btn-outline-secondary">
                                 <i class="fas fa-info-circle"></i> Details
                             </a>
-                            <a href="{% url 'orders:delete_order' order.id %}" class="btn btn-sm btn-outline-danger">
+                            <button class="btn btn-sm btn-outline-danger delete-btn" data-url="{% url 'orders:delete_order' order.id %}">
                                 <i class="fas fa-trash-alt"></i> Delete
-                            </a>
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -62,5 +62,31 @@
         </table>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function() {
+            let deleteUrl = this.getAttribute("data-url");
+            
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action cannot be undone!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+    });
+});
+</script>
 
 {% endblock content %}

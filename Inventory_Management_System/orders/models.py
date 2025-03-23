@@ -26,6 +26,6 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} of {self.product.name}"
     class Meta():
-        db_table = 'order_item'
+        db_table = 'orders_items'
         unique_together = ('order', 'product')
 

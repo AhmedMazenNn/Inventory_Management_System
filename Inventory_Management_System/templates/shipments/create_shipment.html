@@ -13,8 +13,8 @@
     <h1 class="mt-4 text-center text-primary">{{ form_name }}</h1>
     <hr class="w-50 mx-auto">
 
-    <div class="col-md-6 mx-auto">
-        <form method="post" enctype="multipart/form-data" class="p-4 border rounded shadow bg-light {{ form_class_name }}">
+    <div class="col-md-8 mx-auto">
+        <form method="post" enctype="multipart/form-data" class="p-5 border rounded shadow bg-light {{ form_class_name }}">
             {% csrf_token %}
             
             {% for field in form %}
@@ -52,7 +52,3 @@
 </div>
 
 {% endblock content %}
-
-
-
-
