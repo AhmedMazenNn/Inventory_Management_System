@@ -10,20 +10,11 @@
     <div class="col-md-8 mx-auto">
         <form method="post" enctype="multipart/form-data" class="p-5 border rounded shadow bg-light">
             {% csrf_token %}
-            
             {% for field in form %}
             <div class="mb-3">
                 {{ field|as_crispy_field }}
-                {% if field.errors %}
-                <div class="alert alert-danger p-2 mt-2">
-                    {% for error in field.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </div>
-                {% endif %}
             </div>
             {% endfor %}
-
             {% if form.non_field_errors %}
             <div class="alert alert-danger mt-3">
                 {% for error in form.non_field_errors %}

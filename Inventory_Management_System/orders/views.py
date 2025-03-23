@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView, DetailView
 from django.urls import reverse_lazy
 from django.db.models import F
@@ -10,7 +11,7 @@ from django.views.generic import CreateView, UpdateView, ListView, DeleteView, F
 from django.urls import reverse_lazy
 from django.contrib import messages as message
 
-class OrderCreateView(CreateView):
+class OrderCreateView(LoginRequiredMixin,CreateView):
     model = Order
     form_class = OrderForm
     template_name = 'orders/create_order.html'
@@ -25,22 +26,27 @@ class OrderCreateView(CreateView):
         message.success(self.request, "Order created successfully.")
         return super().form_valid(form)
     
-class OrderListView(ListView):
+class OrderListView(LoginRequiredMixin,ListView):
     model = Order
     template_name = 'orders/order_list.html'
     context_object_name = 'orders'
 
 
-class OrderDeleteView(DeleteView):
+class OrderDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = Order
     template_name = "orders/confirm.html"
     success_url = reverse_lazy("orders:create_order")
+    def test_func(self):
+        return self.request.user.role == 'manager'
+    def handle_no_permission(self):
+        message.error(self.request,"only manager can delete order")
+        return redirect("orders:order_list")
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["ordername"] = self.object.supermarket_name if self.object else ''
         return context
 
-class OrderItemCreateView(FormView):
+class OrderItemCreateView(LoginRequiredMixin,FormView):
     template_name = 'orders/create_order.html'  
     form_class = OrderItemForm
     def get_context_data(self,**kwargs):
@@ -63,7 +69,7 @@ class OrderItemCreateView(FormView):
         return self.render_to_response(self.get_context_data(form=form))   
     success_url = reverse_lazy("orders:order_list")
 
-class OrderDetailView(DetailView):
+class OrderDetailView(LoginRequiredMixin,DetailView):
     model = Order
     template_name = 'orders/order_detail.html'
     context_object_name = 'order'
@@ -72,10 +78,16 @@ class OrderDetailView(DetailView):
         context['order_items'] = self.object.order_items.all()
         return context
 
-class OrderUpdateView(UpdateView):
+class OrderUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = OrderItem
     form_class = OrderItemForm
     template_name = 'orders/create_order.html'
+    def test_func(self):
+        order_item = self.get_object()
+        return order_item.order and order_item.order.status == 'Pending' and self.request.user.role =="manager"
+    def handle_no_permission(self):
+        message.warning(self.request,"you can not update approved order")
+        return redirect("orders:order_list")
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form_name"] = "Update Item"
@@ -85,7 +97,7 @@ class OrderUpdateView(UpdateView):
         return reverse_lazy('orders:order_detail', kwargs={'pk': self.object.order.id})
 
 
-class OrderApproveView(UpdateView):
+class OrderApproveView(LoginRequiredMixin,UpdateView):
     model = Order
     fields = []
     template_name = 'orders/order_detail.html'

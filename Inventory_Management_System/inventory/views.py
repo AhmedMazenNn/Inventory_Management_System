@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, UpdateView, View
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Product
 from orders.models import Order
 from shipment.models import Shipment
@@ -64,9 +64,14 @@ class create_product(LoginRequiredMixin,CreateView):
 
 
 
-class Dashboard(LoginRequiredMixin, View):
+class Dashboard(LoginRequiredMixin,UserPassesTestMixin, View):
     def get(self, request):
         return render(request, "accounts/dashboard.html")
+    def test_func(self):
+        return self.request.user.role == "manager"
+    def handle_no_permission(self):
+        messages.error(self.request,"you have no access to dashboard ")
+        return redirect("home")
 
     def post(self, request, query_name):
         shipment_count = Shipment.objects.count()
@@ -90,7 +95,7 @@ class Dashboard(LoginRequiredMixin, View):
                     opacity=0.9
                 ),
                 textfont_size=14,
-                textposition="outside",
+                # textposition="outside",
                 width=0.35  
             )
 
@@ -101,7 +106,7 @@ class Dashboard(LoginRequiredMixin, View):
                 yaxis=dict(title=y_col, gridcolor="lightgray", zerolinecolor="gray"),
                 font=dict(family="Arial", size=14, color="black"),
                 bargap=0.4,
-                margin=dict(l=50, r=50, t=50, b=80),
+                margin=dict(l=50, r=50, t=30, b=20),
                 showlegend=False
             )
 
