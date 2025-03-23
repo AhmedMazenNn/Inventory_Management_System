@@ -87,12 +87,12 @@ WSGI_APPLICATION = 'Inventory_Management_System.wsgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'inventory',
-        'USER': 'postgres',
-        'PASSWORD': '12345678',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'IslamZaki$Inventory_Management_System',
+        'USER': 'IslamZaki',
+        'PASSWORD': 'Inventory123',
+        'HOST': 'IslamZaki.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
     }
 }
 
