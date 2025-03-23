@@ -93,7 +93,7 @@
         {% if request.user.role == 'manager' and shipment.status == 'Approved' %}
         <form action="{% url 'shipments:deliver_shipment' shipment.id %}" method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-danger">
                 <i class="fas fa-check"></i> Deliver Shipment
             </button>
         </form>

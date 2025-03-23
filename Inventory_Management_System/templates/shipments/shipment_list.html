@@ -33,7 +33,7 @@
                         <span class="badge
                             {% if shipment.status == 'Pending' %}bg-warning text-dark
                             {% elif shipment.status == 'Approved' %}bg-success
-                            {% else %}bg-secondary{% endif %}">
+                            {% else %}bg-danger{% endif %}">
                             {{ shipment.status }}
                         </span>
                     </td>
@@ -50,7 +50,7 @@
                                 <i class="fas fa-info-circle"></i> Details
                             </a>
                             <a href="{% url 'shipments:delete_shipment' shipment.id %}"
-                                class="btn btn-sm btn-outline-danger">
+                                class="btn btn-sm btn-outline-danger {% if request.user.role != 'manager' %} disabled {% endif %}">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </a>
                         </div>
