@@ -6,7 +6,7 @@
     <a href="{% url 'shipments:create_shipment' %}" class="btn btn-primary mb-3 fw-bold">
         <i class="fas fa-plus-circle"></i> Create New Shipment
     </a>
-    
+
     <h2 class="text-center my-4 text-primary">Shipments List</h2>
     <hr>
 
@@ -33,7 +33,7 @@
                         <span class="badge
                             {% if shipment.status == 'Pending' %}bg-warning text-dark
                             {% elif shipment.status == 'Approved' %}bg-success
-                            {% else %}bg-secondary{% endif %}">
+                            {% else %}bg-danger{% endif %}">
                             {{ shipment.status }}
                         </span>
                     </td>
@@ -41,13 +41,25 @@
                     <td>{{ shipment.approved_by.username|default:"Not Approved" }}</td>
                     <td>
                         <div class="btn-group" role="group">
+<<<<<<< HEAD
                             <a href="{% url 'shipments:add_shipment_item' shipment.id %}" class="btn btn-sm btn-outline-primary {% if shipment.status == 'Approved' %} disabled {% endif %}">
                                 <i class="fas fa-edit"></i> Update
+=======
+                            <a href="{% url 'shipments:add_shipment_item' shipment.id %}"
+                                class="btn btn-sm btn-outline-primary {% if shipment.status == 'Approved' %} disabled {% endif %} ">
+                                <i class="fas fa-edit"></i> Add Item
+>>>>>>> origin/sobhi
                             </a>
-                            <a href="{% url 'shipments:shipment_detail' shipment.id %}" class="btn btn-sm btn-outline-secondary">
+                            <a href="{% url 'shipments:shipment_detail' shipment.id %}"
+                                class="btn btn-sm btn-outline-secondary">
                                 <i class="fas fa-info-circle"></i> Details
                             </a>
+<<<<<<< HEAD
                             <button class="btn btn-sm btn-outline-danger delete-btn" data-url="{% url 'shipments:delete_shipment' shipment.id %}">
+=======
+                            <a href="{% url 'shipments:delete_shipment' shipment.id %}"
+                                class="btn btn-sm btn-outline-danger {% if request.user.role != 'manager' %} disabled {% endif %}">
+>>>>>>> origin/sobhi
                                 <i class="fas fa-trash-alt"></i> Delete
                             </button>
                         </div>
@@ -63,6 +75,7 @@
     </div>
 </div>
 
+<<<<<<< HEAD
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -91,3 +104,6 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 {% endblock content %}
+=======
+{% endblock content %}
+>>>>>>> origin/sobhi
