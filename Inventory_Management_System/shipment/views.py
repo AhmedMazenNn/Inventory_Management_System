@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView, DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
@@ -42,6 +43,15 @@ class ShipmentDeleteView(DeleteView):
 class ShipmentItemCreateView(FormView):
     template_name = 'shipments/create_shipment.html'  
     form_class = ShipmentItemForm
+
+    def dispatch(self, request, *args, **kwargs):
+        shipment_id = self.kwargs.get("shipment_id")
+        self.shipment = get_object_or_404(Shipment, id=shipment_id)
+        if self.shipment.status in ["Delivered", "Approved"]:
+            message.error(request, "You cannot add items to a delivered or approved shipment.")
+            # return redirect("shipments:shipment_list")
+            return redirect("shipments:shipment_detail",pk=self.shipment.id)
+        return super().dispatch(request, *args, **kwargs)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -76,11 +86,28 @@ class ShipmentDetailView(DetailView):
         context['shipment_items'] = self.object.shipment_items.all()
         return context
 
-class ShipmentUpdateView(UpdateView):
+class ShipmentUpdateView(UserPassesTestMixin,UpdateView):
     model = ShipmentItem
     form_class = ShipmentItemForm
     template_name = 'shipments/create_shipment.html'
-    
+
+    def test_func(self):
+        return self.request.user.role == 'manager'
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            message.error(self.request,"Only managers can update shipments.")
+            return redirect("home")
+        return super().handle_no_permission()
+
+    def dispatch(self, request, *args, **kwargs):
+        shipment_item = get_object_or_404(ShipmentItem, pk=self.kwargs.get('pk'))
+        self.shipment = shipment_item.shipment
+        if self.shipment.status in ["Delivered", "Approved"]:
+            message.error(request, "You cannot Update items in a delivered or approved shipment.")
+            return redirect("shipments:shipment_detail",pk=self.shipment.id)
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form_name"] = "Update Shipment Item"
@@ -90,24 +117,57 @@ class ShipmentUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('shipments:shipment_detail', kwargs={'pk': self.object.shipment.id})
 
-class ShipmentApproveView(UpdateView):
+class ShipmentApproveView(UserPassesTestMixin,UpdateView):
     model = Shipment
     fields = []
     template_name = 'shipments/shipment_detail.html'
+
+    def test_func(self):
+        return self.request.user.role == 'manager'
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            message.error(self.request,"Only managers can approve shipments.")
+            return redirect("shipments:shipment_list")
+        return super().handle_no_permission()
     
     def post(self, request, *args, **kwargs):
         shipment = get_object_or_404(Shipment, pk=self.kwargs.get('pk'))
-        if request.user.role == "manager" and shipment.status == 'Pending':
+        shipment_items = shipment.shipment_items.all()
+        print(shipment_items)
+        if shipment_items and request.user.role == "manager" and shipment.status == 'Pending':
             shipment.status = 'Approved'
             shipment.approved_by = request.user
             shipment.save()
-            for shipment_item in shipment.shipment_items.all(): 
-                product = shipment_item.product
-                product.quantity += shipment_item.quantity 
-                product.save()
-            message.success(request, "Shipment approved successfully, and product quantities updated.")
+            message.success(request, "Shipment approved successfully")
         else:
-            message.error(request, "You cannot approve this shipment.")
+            message.error(request, "You cannot approve empty shipment.")
+        return redirect('shipments:shipment_list')
+
+
+class ShipmentDeliverView(UserPassesTestMixin,UpdateView):
+    model = Shipment
+    fields = []
+    template_name = 'shipments/shipment_detail.html'
+
+    def test_func(self):
+        return self.request.user.role == 'manager'
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            message.error(self.request,"Only managers can deliver shipments.")
+            return redirect("shipments:shipment_list")
+        return super().handle_no_permission()
+    
+    def post(self, request, *args, **kwargs):
+        shipment = get_object_or_404(Shipment, pk=self.kwargs.get('pk'))
+        if request.user.role == "manager" and shipment.status == 'Approved':
+            shipment.status = 'Delivered'
+            shipment.approved_by = request.user
+            shipment.save()
+            message.success(request, "Shipment Delivered successfully")
+        else:
+            message.error(request, "You cannot Delivered this shipment.")
         return redirect('shipments:shipment_list')
 
 

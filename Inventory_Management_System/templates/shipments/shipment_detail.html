@@ -35,9 +35,9 @@
             </table>
         </div>
     </div>
-    
+
     <h2 class="mt-5 text-center text-secondary">Shipment Items</h2>
-    <hr class="mb-3"/>
+    <hr class="mb-3" />
     <div class="table-responsive">
         <table class="table table-striped table-hover text-center shadow-sm">
             <thead class="table-dark">
@@ -55,7 +55,7 @@
                     <td>{{ item.product.name }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>
-                        <a href="{% url 'shipments:update_shipment' item.id %}" class="btn btn-sm btn-warning">
+                        <a href="{% url 'shipments:update_shipment' item.id %}" class="btn btn-sm btn-warning ">
                             <i class="fas fa-edit"></i> Update
                         </a>
                     </td>
@@ -73,13 +73,14 @@
         <a href="{% url 'shipments:shipment_list' %}" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left"></i> Back to Shipments List
         </a>
-    
+
         {% if request.user.role != 'employee' or shipment.status != 'Approved' %}
-        <a href="{% url 'shipments:add_shipment_item' shipment.id %}" class="btn btn-primary {% if shipment.status == 'Approved' %} disabled {% endif %} ">
+        <a href="{% url 'shipments:add_shipment_item' shipment.id %}"
+            class="btn btn-primary {% if shipment.status == 'Approved' %} disabled {% endif %} ">
             <i class="fas fa-plus"></i> Add Item
         </a>
         {% endif %}
-    
+
         {% if request.user.role == 'manager' and shipment.status == 'Pending' %}
         <form action="{% url 'shipments:approve_shipment' shipment.id %}" method="post">
             {% csrf_token %}
@@ -88,55 +89,16 @@
             </button>
         </form>
         {% endif %}
+
+        {% if request.user.role == 'manager' and shipment.status == 'Approved' %}
+        <form action="{% url 'shipments:deliver_shipment' shipment.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-check"></i> Deliver Shipment
+            </button>
+        </form>
+        {% endif %}
     </div>
-    
+
 </div>
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
