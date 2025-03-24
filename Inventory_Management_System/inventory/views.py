@@ -90,7 +90,6 @@ class Dashboard(LoginRequiredMixin,UserPassesTestMixin, View):
         def create_chart(df, x_col, y_col, title, color):
             """Generates a clean and professional bar chart."""
             fig = px.bar(df, x=x_col, y=y_col, title=title, text=y_col)
-
             fig.update_traces(
                 marker=dict(
                     color=color,
@@ -101,7 +100,6 @@ class Dashboard(LoginRequiredMixin,UserPassesTestMixin, View):
                 # textposition="outside",
                 width=0.35  
             )
-
             fig.update_layout(
                 paper_bgcolor="#f8f9fa",  
                 plot_bgcolor="white",
@@ -112,17 +110,12 @@ class Dashboard(LoginRequiredMixin,UserPassesTestMixin, View):
                 margin=dict(l=50, r=50, t=30, b=20),
                 showlegend=False
             )
-
             return pyo.plot(fig, output_type="div")
-
-        # Product Insights Chart (Cool Blue)
         if query_name == 'product':
             products = Product.objects.values("name", "quantity")
             df = pd.DataFrame(list(products))
             if not df.empty:
                 context["img"] = create_chart(df, "name", "quantity", "Product Quantity", "#3B82F6")
-
-        # Shipment Insights Chart (Calm Teal)
         elif query_name == 'shipment':
             shipments = Shipment.objects.annotate(
                 num_products=Count('shipment_items__product', distinct=True)
@@ -130,8 +123,6 @@ class Dashboard(LoginRequiredMixin,UserPassesTestMixin, View):
             df = pd.DataFrame(list(shipments))
             if not df.empty:
                 context["img"] = create_chart(df, "factory_name", "num_products", "Products Per Shipment", "#14B8A6")
-
-        # Order Insights Chart (Soft Green)
         elif query_name == 'order':
             orders = Order.objects.annotate(
                 num_products=Count('order_items__product', distinct=True)
