@@ -1,5 +1,5 @@
 {% extends "base/base.html" %}
-
+{% load static %}
 {% block content %}
 
 <div class="container mt-4 text-center">
@@ -42,12 +42,13 @@
                     <td>
                         <div class="btn-group" role="group">
                             <a href="{% url 'orders:add_order_item' order.id %}" class="btn btn-sm btn-outline-primary {% if order.status == 'Approved' %} disabled {% endif %} ">
-                                <i class="fas fa-edit"></i> Update
+                                <i class="fas fa-edit"></i> Add Item
                             </a>
                             <a href="{% url 'orders:order_detail' order.id %}" class="btn btn-sm btn-outline-secondary">
                                 <i class="fas fa-info-circle"></i> Details
                             </a>
-                            <a href="{% url 'orders:delete_order' order.id %}" class="btn btn-sm btn-outline-danger">
+                            <a href="{% url 'orders:delete_order' order.id %}"
+                                class="btn btn-sm btn-outline-danger {% if request.user.role != 'manager' %} disabled {% endif %}">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </a>
                         </div>
@@ -62,5 +63,8 @@
         </table>
     </div>
 </div>
-
 {% endblock content %}
+
+{% block script %}
+<!-- <script src="{% static 'js/alert.js' %}"></script> -->
+{% endblock script %}

@@ -13,24 +13,16 @@
     <h1 class="mt-4 text-center text-primary">{{form_name}}</h1>
     <hr class="w-50 mx-auto">
 
-    <div class="col-md-6 mx-auto">
-        <form method="post" enctype="multipart/form-data" class="p-4 border rounded shadow bg-light {{ form_class_name }}">
+    <div class="col-md-8 mx-auto">
+        <form method="post" enctype="multipart/form-data" class="p-5 border rounded shadow bg-light {{ form_class_name }}">
             {% csrf_token %}
             
             {% for field in form %}
             <div class="mb-3">
                 <label class="form-label fw-bold">{{ field.label }}</label>
                 {{ field|as_crispy_field }}
-                {% if field.errors %}
-                <div class="alert alert-danger p-2 mt-2">
-                    {% for error in field.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </div>
-                {% endif %}
             </div>
             {% endfor %}
-
             {% if form.non_field_errors %}
             <div class="alert alert-danger mt-3">
                 {% for error in form.non_field_errors %}
@@ -51,6 +43,5 @@
         </form>
     </div>
 </div>
-
 
 {% endblock content %}

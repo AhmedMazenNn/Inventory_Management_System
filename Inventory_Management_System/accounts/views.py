@@ -8,10 +8,7 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.db import connection
 
-
-
 User = get_user_model()
-
 def home(request):
     return render(request, "accounts/home.html")
 class LoginView(AuthLoginView):

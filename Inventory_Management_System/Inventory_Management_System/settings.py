@@ -93,7 +93,14 @@ WSGI_APPLICATION = 'Inventory_Management_System.wsgi.application'
 # }
 
 DATABASES = {
-    'default': dj_database_url.config(default='sqlite:///db.sqlite3')  # Fallback to SQLite for local dev
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'inventory',  
+        'USER': 'postgres',         
+        'PASSWORD': '12345678', 
+        'HOST': 'localhost',           
+        'PORT': '5432',                 
+    }
 }
 
 # Password validation
@@ -142,16 +149,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = "dashboard"
-LOGOUT_REDIRECT_URL = "login"
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = "accounts.User"
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-django_heroku.settings(locals())
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
+AUTH_USER_MODEL = 'accounts.User'
+
+LOGIN_URL = "login"
