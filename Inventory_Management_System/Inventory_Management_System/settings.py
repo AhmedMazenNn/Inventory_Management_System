@@ -1,3 +1,8 @@
+import django_heroku
+import dj_database_url
+import os
+
+
 """
 Django settings for Inventory_Management_System project.
 
@@ -47,6 +52,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -85,15 +91,9 @@ WSGI_APPLICATION = 'Inventory_Management_System.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'IslamZaki$Inventory_Management_System',
-        'USER': 'IslamZaki',
-        'PASSWORD': 'Inventory123',
-        'HOST': 'IslamZaki.mysql.pythonanywhere-services.com',
-        'PORT': '3306',
-    }
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3')  # Fallback to SQLite for local dev
 }
 
 # Password validation
@@ -149,7 +149,9 @@ AUTH_USER_MODEL = "accounts.User"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-STATIC_URL = '/static/'
-STATIC_ROOT = '/home/yourusername/your-django-project/static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
+django_heroku.settings(locals())
 
