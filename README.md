@@ -4,7 +4,8 @@
 The Inventory Management System is a web-based platform designed to manage product inventory for a warehouse supplying supermarkets. It provides functionality for tracking shipments from factories, managing orders from supermarkets, and overseeing product stock. The system includes role-based access, ensuring that only authorized personnel can perform critical operations.
 
 ## Presentaion
-[Inventory_Management_System]([url](https://drive.google.com/file/d/1Lh9vmqMSr14Fa0Ly2nC48cIKTYMk0b8-/view?usp=sharing))
+[Inventory Management System](https://drive.google.com/file/d/1Lh9vmqMSr14Fa0Ly2nC48cIKTYMk0b8-/view?usp=sharing)
+
 
 ## Tech Stack
 - **Backend:** Django, Python
@@ -28,7 +29,7 @@ The system consists of four main models:
 - **Shipment:** Tracks incoming shipments from factories.
 
 ## ERD
-[Models]([url](https://drive.google.com/file/d/1HwJKbcEZubhvWgMqRJcqynJo6tz8HGyY/view?usp=drive_link))
+[Models](https://drive.google.com/file/d/1HwJKbcEZubhvWgMqRJcqynJo6tz8HGyY/view?usp=drive_link)
 
 ## Team Members
 - **Ahmed Mazen** - Project Leader
