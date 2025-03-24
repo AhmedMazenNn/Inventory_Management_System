@@ -20,7 +20,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import dj_database_url
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -84,14 +84,7 @@ WSGI_APPLICATION = 'Inventory_Management_System.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("PGDATABASE", "railway"),
-        'USER': os.getenv("PGUSER", "postgres"),
-        'PASSWORD': os.getenv("PGPASSWORD", "oRdsyGyvzOHODdtuRmnBdrgLmSJhmsjm"),
-        'HOST': os.getenv("PGHOST", "postgres.railway.internal"),
-        'PORT': os.getenv("PGPORT", "5432"),
-    }
+    'default': dj_database_url.config(default='postgresql://postgres:oRdsyGyvzOHODdtuRmnBdrgLmSJhmsjm@postgres.railway.internal:5432/railway')
 }
 
 # Password validation
