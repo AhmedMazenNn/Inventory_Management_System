@@ -83,24 +83,20 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Inventory_Management_System.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DB_NAME = os.getenv("PGDATABASE")
+DB_USER = os.getenv("PGUSER")
+DB_PASSWORD = os.getenv("PGPASSWORD")
+DB_HOST = os.getenv("PGHOST")
+DB_PORT = os.getenv("PGPORT")
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '${{Postgres.PGDATABASE}}',
-        'USER': '${{Postgres.PGUSER}}',
-        'PASSWORD': '${{Postgres.PGPASSWORD}}',
-        'HOST': '${{Postgres.PGHOST}}',
-        'PORT': '${{Postgres.PGPORT}}',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
