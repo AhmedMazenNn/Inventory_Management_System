@@ -1,7 +1,13 @@
-import django_heroku
-import dj_database_url
 import os
+from dotenv import load_dotenv  # Optional for local testing
 
+load_dotenv()  # Only for local .env file
+
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dummy-secret-key-for-dev')
+
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+ALLOWED_HOSTS = ['*'] 
 
 """
 Django settings for Inventory_Management_System project.
@@ -28,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&94kl1$wg^%9^zml14qlj=%o^8-$ok)%ey+ou8yhtf3tp$x)c('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -95,11 +101,11 @@ WSGI_APPLICATION = 'Inventory_Management_System.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'inventory',  
-        'USER': 'postgres',         
-        'PASSWORD': '12345678', 
-        'HOST': 'localhost',           
-        'PORT': '5432',                 
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
@@ -156,3 +162,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_URL = "login"
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
