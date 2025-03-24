@@ -86,11 +86,11 @@ WSGI_APPLICATION = 'Inventory_Management_System.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ["PGDATABASE"],
-        'USER': os.environ["PGUSER"],
-        'PASSWORD': os.environ["PGPASSWORD"],
-        'HOST': os.environ["PGHOST"],
-        'PORT': os.environ["PGPORT"],
+        'NAME': os.getenv("PGDATABASE", "railway"),
+        'USER': os.getenv("PGUSER", "postgres"),
+        'PASSWORD': os.getenv("PGPASSWORD", "oRdsyGyvzOHODdtuRmnBdrgLmSJhmsjm"),
+        'HOST': os.getenv("PGHOST", "postgres.railway.internal"),
+        'PORT': os.getenv("PGPORT", "5432"),
     }
 }
 
