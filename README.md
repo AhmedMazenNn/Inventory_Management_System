@@ -6,6 +6,8 @@ The Inventory Management System is a web-based platform designed to manage produ
 ## Presentaion
 [Inventory Management System](https://drive.google.com/file/d/1Lh9vmqMSr14Fa0Ly2nC48cIKTYMk0b8-/view?usp=sharing)
 
+## Deployment
+[Website](https://inventorymanagementsystem-production-cafa.up.railway.app/))
 
 ## Tech Stack
 - **Backend:** Django, Python
