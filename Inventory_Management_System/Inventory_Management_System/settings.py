@@ -85,16 +85,32 @@ WSGI_APPLICATION = 'Inventory_Management_System.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'inventory',  
+#         'USER': 'postgres',         
+#         'PASSWORD': '12345678', 
+#         'HOST': 'localhost',           
+#         'PORT': '5432',                 
+#     }
+# }
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'inventory',  
-        'USER': 'postgres',         
-        'PASSWORD': '12345678', 
-        'HOST': 'localhost',           
-        'PORT': '5432',                 
+        'NAME': os.getenv('POSTGRES_DB', 'inventory'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '12345678qwe'),
+        'HOST': os.getenv('POSTGRES_HOST', 'db'),  # Match the service name in docker-compose
+        'PORT': os.getenv('POSTGRES_PORT', '5433'),
     }
 }
+
+ALLOWED_HOSTS = ["atyyaelkhamy55.zapto.org","atyya33django33.duckdns.org","127.0.0.1", "localhost"]  # Change this later to your DuckDNS domain
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -134,6 +150,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,"static")
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_ROOT = os.path.join(BASE_DIR,"static")
 
 MEDIA_URL = 'media/'
