@@ -1,3 +1,16 @@
+import os
+from dotenv import load_dotenv  # Optional for local testing
+
+load_dotenv()  # Only for local .env file
+
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dummy-secret-key-for-dev')
+
+DEBUG = 'False'
+
+ALLOWED_HOSTS = ['*'] 
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+
 """
 Django settings for Inventory_Management_System project.
 
@@ -9,7 +22,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import dj_database_url
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&94kl1$wg^%9^zml14qlj=%o^8-$ok)%ey+ou8yhtf3tp$x)c('
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+# SECRET_KEY = 'django-insecure-&94kl1$wg^%9^zml14qlj=%o^8-$ok)%ey+ou8yhtf3tp$x)c('
 
 AUTH_USER_MODEL = 'accounts.User'
 # Application definition
@@ -47,6 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -76,8 +85,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Inventory_Management_System.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+DATABASES = {
+    'default': dj_database_url.config(default='postgresql://postgres:NJBiEuWsByfULdXTHdiUZExKrnDhmZed@switchyard.proxy.rlwy.net:29360/railway')
+}
 
 # DATABASES = {
 #     'default': {
@@ -149,3 +159,12 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_URL = "login"
+
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://inventorymanagementsystem-production-cafa.up.railway.app"
+]
+
