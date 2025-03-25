@@ -8,6 +8,8 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dummy-secret-key-for-dev')
 DEBUG = 'False'
 
 ALLOWED_HOSTS = ['*'] 
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 
 """
 Django settings for Inventory_Management_System project.
