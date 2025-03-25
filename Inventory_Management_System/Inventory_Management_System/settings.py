@@ -5,7 +5,7 @@ load_dotenv()  # Only for local .env file
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dummy-secret-key-for-dev')
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = 'False'
 
 ALLOWED_HOSTS = ['*'] 
 
