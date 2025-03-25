@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'Inventory_Management_System.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.config(default='postgresql://postgres:oRdsyGyvzOHODdtuRmnBdrgLmSJhmsjm@postgres.railway.internal:5432/railway')
+    'default': dj_database_url.config(default='postgresql://postgres:NJBiEuWsByfULdXTHdiUZExKrnDhmZed@switchyard.proxy.rlwy.net:29360/railway')
 }
 
 # Password validation
